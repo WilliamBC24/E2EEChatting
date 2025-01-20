@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: Gateway
+  cloud:
+    gateway:
+#      discovery:
+#        locator:
+#          enabled: true
+      routes:
+        - id: Microservice
+          uri: lb://Microservice this is the uri that it sends you to
+          predicates:
+            - Path=/microservice/** this is the path that it listens to, so for example if you go to localhost:8080/microservice it will send you to the microservice uri
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER}
+
+server:
+  port: 8081

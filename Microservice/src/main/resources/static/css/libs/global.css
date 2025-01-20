@@ -1,0 +1,138 @@
+body, header, footer, main {width: 100%}
+header, nav, footer {background-color: cyan} /* Remove on production */
+.min-vh-5 {min-height: 5vh !important;}
+.min-vh-10 {min-height: 10vh !important;}
+.min-vh-15 {min-height: 15vh !important;}
+.min-vh-20 {min-height: 20vh !important;}
+.min-vh-25 {min-height: 25vh !important;}
+.min-vh-30 {min-height: 30vh !important;}
+.min-vh-35 {min-height: 35vh !important;}
+.min-vh-40 {min-height: 40vh !important;}
+.min-vh-45 {min-height: 45vh !important;}
+.min-vh-50 {min-height: 50vh !important;}
+.min-vh-55 {min-height: 55vh !important;}
+.min-vh-60 {min-height: 60vh !important;}
+.min-vh-65 {min-height: 65vh !important;}
+.min-vh-70 {min-height: 70vh !important;}
+.min-vh-75 {min-height: 75vh !important;}
+.min-vh-80 {min-height: 80vh !important;}
+.min-vh-85 {min-height: 85vh !important;}
+.min-vh-90 {min-height: 90vh !important;}
+.min-vh-95 {min-height: 95vh !important;}
+
+@media (max-height: 480px) {
+    .min-vh-sm-5 {min-height: 5vh !important;}
+    .min-vh-sm-10 {min-height: 10vh !important;}
+    .min-vh-sm-15 {min-height: 15vh !important;}
+    .min-vh-sm-20 {min-height: 20vh !important;}
+    .min-vh-sm-25 {min-height: 25vh !important;}
+    .min-vh-sm-30 {min-height: 30vh !important;}
+    .min-vh-sm-35 {min-height: 35vh !important;}
+    .min-vh-sm-40 {min-height: 40vh !important;}
+    .min-vh-sm-45 {min-height: 45vh !important;}
+    .min-vh-sm-50 {min-height: 50vh !important;}
+    .min-vh-sm-55 {min-height: 55vh !important;}
+    .min-vh-sm-60 {min-height: 60vh !important;}
+    .min-vh-sm-65 {min-height: 65vh !important;}
+    .min-vh-sm-70 {min-height: 70vh !important;}
+    .min-vh-sm-75 {min-height: 75vh !important;}
+    .min-vh-sm-80 {min-height: 80vh !important;}
+    .min-vh-sm-85 {min-height: 85vh !important;}
+    .min-vh-sm-90 {min-height: 90vh !important;}
+    .min-vh-sm-95 {min-height: 95vh !important;}
+    .min-vh-sm-100 {min-height: 100vh !important;}
+}
+
+@media (max-height: 768px) {
+    .min-vh-md-5 {min-height: 5vh !important;}
+    .min-vh-md-10 {min-height: 10vh !important;}
+    .min-vh-md-15 {min-height: 15vh !important;}
+    .min-vh-md-20 {min-height: 20vh !important;}
+    .min-vh-md-25 {min-height: 25vh !important;}
+    .min-vh-md-30 {min-height: 30vh !important;}
+    .min-vh-md-35 {min-height: 35vh !important;}
+    .min-vh-md-40 {min-height: 40vh !important;}
+    .min-vh-md-45 {min-height: 45vh !important;}
+    .min-vh-md-50 {min-height: 50vh !important;}
+    .min-vh-md-55 {min-height: 55vh !important;}
+    .min-vh-md-60 {min-height: 60vh !important;}
+    .min-vh-md-65 {min-height: 65vh !important;}
+    .min-vh-md-70 {min-height: 70vh !important;}
+    .min-vh-md-75 {min-height: 75vh !important;}
+    .min-vh-md-80 {min-height: 80vh !important;}
+    .min-vh-md-85 {min-height: 85vh !important;}
+    .min-vh-md-90 {min-height: 90vh !important;}
+    .min-vh-md-95 {min-height: 95vh !important;}
+    .min-vh-md-100 {min-height: 100vh !important;}
+}
+
+
+@media (max-height: 1366px) {
+    .min-vh-lg-5 {min-height: 5vh !important;}
+    .min-vh-lg-10 {min-height: 10vh !important;}
+    .min-vh-lg-15 {min-height: 15vh !important;}
+    .min-vh-lg-20 {min-height: 20vh !important;}
+    .min-vh-lg-25 {min-height: 25vh !important;}
+    .min-vh-lg-30 {min-height: 30vh !important;}
+    .min-vh-lg-35 {min-height: 35vh !important;}
+    .min-vh-lg-40 {min-height: 40vh !important;}
+    .min-vh-lg-45 {min-height: 45vh !important;}
+    .min-vh-lg-50 {min-height: 50vh !important;}
+    .min-vh-lg-55 {min-height: 55vh !important;}
+    .min-vh-lg-60 {min-height: 60vh !important;}
+    .min-vh-lg-65 {min-height: 65vh !important;}
+    .min-vh-lg-70 {min-height: 70vh !important;}
+    .min-vh-lg-75 {min-height: 75vh !important;}
+    .min-vh-lg-80 {min-height: 80vh !important;}
+    .min-vh-lg-85 {min-height: 85vh !important;}
+    .min-vh-lg-90 {min-height: 90vh !important;}
+    .min-vh-lg-95 {min-height: 95vh !important;}
+    .min-vh-lg-100 {min-height: 100vh !important;}
+}
+
+@media (max-height: 1920px) {
+    .min-vh-xl-5 {min-height: 5vh !important;}
+    .min-vh-xl-10 {min-height: 10vh !important;}
+    .min-vh-xl-15 {min-height: 15vh !important;}
+    .min-vh-xl-20 {min-height: 20vh !important;}
+    .min-vh-xl-25 {min-height: 25vh !important;}
+    .min-vh-xl-30 {min-height: 30vh !important;}
+    .min-vh-xl-35 {min-height: 35vh !important;}
+    .min-vh-xl-40 {min-height: 40vh !important;}
+    .min-vh-xl-45 {min-height: 45vh !important;}
+    .min-vh-xl-50 {min-height: 50vh !important;}
+    .min-vh-xl-55 {min-height: 55vh !important;}
+    .min-vh-xl-60 {min-height: 60vh !important;}
+    .min-vh-xl-65 {min-height: 65vh !important;}
+    .min-vh-xl-70 {min-height: 70vh !important;}
+    .min-vh-xl-75 {min-height: 75vh !important;}
+    .min-vh-xl-80 {min-height: 80vh !important;}
+    .min-vh-xl-85 {min-height: 85vh !important;}
+    .min-vh-xl-90 {min-height: 90vh !important;}
+    .min-vh-xl-95 {min-height: 95vh !important;}
+    .min-vh-xl-100 {min-height: 100vh !important;}
+}
+
+.label-error {
+    color: red;
+    font-size: small;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #c0c0c0;
+}
+.separator:not(:empty)::before {margin-right: .25em;}
+.separator:not(:empty)::after {margin-left: .25em;}
+
+.float-inline-end {
+    float: inline-end;
+}
