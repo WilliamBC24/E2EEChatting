@@ -51,7 +51,8 @@ services:
       EUREKA_SERVER: ${EUREKA_SERVER}  
       CONFIG_URI: ${CONFIG_URI}
     depends_on:
-      - eureka    
+      - eureka   
+      - config
 
   config:
     build:
@@ -91,6 +92,7 @@ services:
     depends_on:
       - mysql
       - eureka
+      - config
 
 
 networks:
