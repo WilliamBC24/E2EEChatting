@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Config
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER}
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    hostname: localhost
+
+server:
+  port: 8100
