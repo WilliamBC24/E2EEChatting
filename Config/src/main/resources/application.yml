@@ -1,15 +1,13 @@
 spring:
   application:
     name: Config
-
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_SERVER}
-  instance:
-    prefer-ip-address: true
-    ip-address: 127.0.0.1
-    hostname: localhost
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${GITHUB_CONFIG_URI}
+          username: WilliamBC24
+          password: ${GITHUB_PASS}
 
 server:
   port: 8100

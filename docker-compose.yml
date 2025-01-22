@@ -1,18 +1,18 @@
 services:
   mysql:
-    image: mysql:latest
+    image: mysql:9.1.0
     restart: always
     networks:
       - microservice
     ports:
       - "3906:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    volumes:
-      - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 30s
@@ -29,6 +29,8 @@ services:
     volumes:
       - ./src:/eureka/src
       - ./build:/eureka/build      
+    environment:
+     CONFIG_URI: ${CONFIG_URI}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8761/health"]
       interval: 30s
@@ -39,7 +41,7 @@ services:
       context: ./Gateway
     restart: always
     ports:
-      - "8080:8081"
+      - "8090:8090"
     networks:
       - microservice
     volumes:
@@ -47,25 +49,45 @@ services:
       - ./build:/gateway/build
     environment:
       EUREKA_SERVER: ${EUREKA_SERVER}  
+      CONFIG_URI: ${CONFIG_URI}
     depends_on:
       - eureka    
+
+  config:
+    build:
+      context: ./Config
+    restart: always
+    ports:
+      - "8100:8100"     
+    networks:
+      - microservice
+    volumes:
+      - ./src:/config/src
+      - ./build:/config/build
+    environment:
+      EUREKA_SERVER: ${EUREKA_SERVER}
+      GITHUB_PASS: ${GITHUB_PASS}
+      GITHUB_CONFIG_URI: ${GITHUB_CONFIG_URI}
+    depends_on:
+      - eureka       
 
   microservice:
     build:
       context: ./Microservice
     restart: always
     ports:
-      - "8081:8080"
+      - "8080:8080"
     networks:
       - microservice
+    volumes:
+      - ./src:/microservice/src
+      - ./build:/microservice/build
     environment:
       DB_URL: ${DB_URL}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       EUREKA_SERVER: ${EUREKA_SERVER}
-    volumes:
-      - ./src:/microservice/src
-      - ./build:/microservice/build
+      CONFIG_URI: ${CONFIG_URI}
     depends_on:
       - mysql
       - eureka

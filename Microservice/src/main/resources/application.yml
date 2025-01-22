@@ -25,11 +25,8 @@ spring:
   servlet:
     multipart:
       enabled: true
-
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_SERVER}
+  config:
+    import: "optional:configserver:${CONFIG_URI}"
 
 server:
   port: 8080
