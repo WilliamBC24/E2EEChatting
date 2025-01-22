@@ -12,6 +12,11 @@ spring:
 server:
   port: 8100
 
+eureka:
+ client:
+   service-url:
+     defaultZone: ${EUREKA_SERVER}
+
 logging:
   level:
     org.springframework.cloud: DEBUG
