@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import service.microservice.entity.Enum.Role;
 
 @Entity
 @Table(name = "account")
@@ -25,4 +26,7 @@ public class Account {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "role")
+    private Role role;
 }

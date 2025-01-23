@@ -1,8 +1,7 @@
-package service.microservice.service;
+package service.microservice.utils;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import service.microservice.utils.ValidEmail;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

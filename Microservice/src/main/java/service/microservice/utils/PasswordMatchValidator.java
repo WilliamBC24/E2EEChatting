@@ -1,9 +1,8 @@
-package service.microservice.service;
+package service.microservice.utils;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import service.microservice.entity.DTO.AccountRegisterDTO;
-import service.microservice.utils.PasswordMatch;
 
 public class PasswordMatchValidator
         implements ConstraintValidator<PasswordMatch, Object> {

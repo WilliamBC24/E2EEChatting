@@ -2,7 +2,6 @@ package service.microservice.utils;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import service.microservice.service.PasswordMatchValidator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

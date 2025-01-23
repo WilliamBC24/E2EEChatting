@@ -1,7 +1,6 @@
 package service.microservice.utils;
 
 import jakarta.validation.Constraint;
-import service.microservice.service.EmailValidator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
