@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import service.microservice.entity.Account;
+import service.microservice.entity.Enum.Role;
 import service.microservice.repo.AccountRepo;
 import service.microservice.entity.DTO.AccountRegisterDTO;
 
@@ -30,6 +31,7 @@ public class RegisterService {
                     .username(accountDTO.getUsername())
                     .password(encodedPassword)
                     .email(accountDTO.getEmail())
+                    .role(Role.USER)
                     .build();
             accountRepo.save(newAccount);
         }

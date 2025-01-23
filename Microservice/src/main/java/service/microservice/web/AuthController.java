@@ -34,7 +34,7 @@ public class AuthController {
     public String registerAccount(@ModelAttribute("user") @Valid AccountRegisterDTO accountDTO, Errors errors) {
         registerService.register(accountDTO, errors);
         if (errors.hasErrors()) {
-            return "register";
+            return "redirect:/auth/register";
         }
         return "redirect:/auth/login";
     }
