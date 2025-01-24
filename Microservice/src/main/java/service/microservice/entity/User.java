@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 import service.microservice.entity.Enum.Role;
 
 @Entity
-@Table(name = "account")
+@Table(name = "user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Account {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

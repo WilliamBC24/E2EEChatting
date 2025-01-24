@@ -1,29 +1,29 @@
 services:
-  mysql:
-    image: mysql:9.1.0
-    restart: always
-    networks:
-      - microservice
-    ports:
-      - "3906:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 30s
-      retries: 3  
+  # mysql:
+  #   image: mysql:9.1.0
+  #   restart: always
+  #   networks:
+  #     - microservice
+  #   ports:
+  #     - "3906:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   environment:
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+  #     MYSQL_USER: ${DB_USER}
+  #     MYSQL_PASSWORD: ${DB_PASSWORD}
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     interval: 30s
+  #     retries: 3  
   
   eureka:
     build: 
       context: ./Eureka
     restart: always
     ports:
-      - "8761:8761"
+      - "${EUREKA_PORT}:${EUREKA_PORT}"
     networks:
       - microservice
     volumes:
@@ -31,17 +31,14 @@ services:
       - ./build:/eureka/build      
     environment:
      CONFIG_URI: ${CONFIG_URI}
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/health"]
-      interval: 30s
-      retries: 3  
+
 
   gateway:
     build:
       context: ./Gateway
     restart: always
     ports:
-      - "8090:8090"
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
     networks:
       - microservice
     volumes:
@@ -59,7 +56,7 @@ services:
       context: ./Config
     restart: always
     ports:
-      - "8100:8100"     
+      - "${CONFIG_PORT}:${CONFIG_PORT}"     
     networks:
       - microservice
     volumes:
@@ -68,16 +65,14 @@ services:
     environment:
       EUREKA_SERVER: ${EUREKA_SERVER}
       GITHUB_PASS: ${GITHUB_PASS}
-      GITHUB_CONFIG_URI: ${GITHUB_CONFIG_URI}
-    depends_on:
-      - eureka       
+      GITHUB_CONFIG_URI: ${GITHUB_CONFIG_URI}  
 
   microservice:
     build:
       context: ./Microservice
     restart: always
     ports:
-      - "8080:8080"
+      - "${MICROSERVICE_PORT}:${MICROSERVICE_PORT}"
     networks:
       - microservice
     volumes:

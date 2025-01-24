@@ -2,7 +2,7 @@ package service.microservice.utils;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import service.microservice.entity.DTO.AccountRegisterDTO;
+import service.microservice.entity.DTO.UserRegisterDTO;
 
 public class PasswordMatchValidator
         implements ConstraintValidator<PasswordMatch, Object> {
@@ -12,7 +12,7 @@ public class PasswordMatchValidator
     }
     @Override
     public boolean isValid(Object obj, ConstraintValidatorContext context){
-        AccountRegisterDTO user = (AccountRegisterDTO) obj;
+        UserRegisterDTO user = (UserRegisterDTO) obj;
         return user.getPassword().equals(user.getPasswordMatch());
     }
 }

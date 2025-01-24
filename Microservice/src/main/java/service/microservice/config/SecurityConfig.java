@@ -18,17 +18,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
         daoProvider.setUserDetailsService(this.userDetailsService);
-        daoProvider.setPasswordEncoder(passwordEncoder());
+        daoProvider.setPasswordEncoder(passwordEncoder);
         return daoProvider;
     }
 
@@ -49,10 +51,5 @@ public class SecurityConfig {
 //                        .requestMatchers("/home").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated());
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

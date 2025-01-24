@@ -31,7 +31,7 @@
 <body>
 <div class="register-container">
     <h2>Member Login</h2>
-    <form th:action="@{/auth/register}" th:object="${accountDTO}" method="post">
+    <form th:action="@{/auth/register}" th:object="${userDTO}" method="post">
         <div class="form-group">
             <input type="text" th:field="*{username}" class="form-control" name="username" placeholder="Username" required>
             <p th:each="error: ${#fields.errors('username')}" th:text="${error}"></p>

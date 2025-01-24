@@ -1,10 +1,10 @@
 package service.microservice.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import service.microservice.entity.Account;
+import service.microservice.entity.User;
 
-public interface AccountRepo extends JpaRepository<Account, Long> {
-    Account findByUsername(String username);
+public interface UserRepo extends JpaRepository<User, Long> {
+    User findByUsername(String username);
 
     boolean existsByUsername(String username);
 

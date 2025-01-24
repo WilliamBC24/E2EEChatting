@@ -6,17 +6,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import service.microservice.entity.DTO.AccountRegisterDTO;
-import service.microservice.service.RegisterService;
+import service.microservice.entity.DTO.UserRegisterDTO;
+import service.microservice.service.RegisterServiceImpl;
 
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
-    private final RegisterService registerService;
+    private final RegisterServiceImpl registerServiceImpl;
 
     @Autowired
-    public AuthController(RegisterService registerService) {
-        this.registerService = registerService;
+    public AuthController(RegisterServiceImpl registerServiceImpl) {
+        this.registerServiceImpl = registerServiceImpl;
     }
 
     @GetMapping("/login")
@@ -26,13 +26,13 @@ public class AuthController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("accountDTO", new AccountRegisterDTO());
+        model.addAttribute("userDTO", new UserRegisterDTO());
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerAccount(@ModelAttribute("user") @Valid AccountRegisterDTO accountDTO, Errors errors) {
-        registerService.register(accountDTO, errors);
+    public String registerAccount(@ModelAttribute("user") @Valid UserRegisterDTO accountDTO, Errors errors) {
+        registerServiceImpl.register(accountDTO, errors);
         if (errors.hasErrors()) {
             return "redirect:/auth/register";
         }
