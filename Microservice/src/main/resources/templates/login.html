@@ -50,11 +50,35 @@
         <div class="form-group">
             <input type="password" class="form-control" name="password" placeholder="Password" required>
         </div>
-        <button type="submit" class="btn btn-login btn-block">Login</button>
+        <button type="button" onclick="submitLogin()" class="btn btn-login btn-block">Login</button>
         <div class="forgot-password">
             <a th:href="@{/auth/register}">Get yourself an user</a>
         </div>
     </form>
+    <script>
+        const submitLogin = () => {
+            const user = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            };
+
+            fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .then(response => {
+                    if (response.ok) {
+                       alert("ok")
+                    } else {
+                        alert("not ok")
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
     <div th:if="${param.logout}">
         <p class="alert alert-success">You have been logged out</p>
     </div>

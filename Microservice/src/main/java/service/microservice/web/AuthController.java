@@ -22,24 +22,13 @@ public class AuthController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
     @PostMapping("/login")
     public String login(@RequestBody User user) {
         return userServiceImpl.verify(user);
     }
 
-    @GetMapping("/register")
-    public String register(Model model) {
-        model.addAttribute("userDTO", new UserRegisterDTO());
-        return "register";
-    }
-
     @PostMapping("/register")
-    public String registerAccount(@ModelAttribute("user") @Valid UserRegisterDTO accountDTO, Errors errors) {
+    public String registerAccount(@RequestBody @Valid UserRegisterDTO accountDTO, Errors errors) {
         registerServiceImpl.register(accountDTO, errors);
         if (errors.hasErrors()) {
             return "redirect:/auth/register";

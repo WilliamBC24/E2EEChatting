@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import service.microservice.entity.Enum.Role;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
