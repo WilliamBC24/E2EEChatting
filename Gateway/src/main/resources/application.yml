@@ -3,9 +3,6 @@ spring:
     name: Gateway
   cloud:
     gateway:
-#      discovery:
-#        locator:
-#          enabled: true
       routes:
         - id: Microservice
           uri: lb://Microservice
@@ -13,6 +10,7 @@ spring:
             - Path=/microservice/**
   config:
     import: "optional:configserver:${CONFIG_URI}"
+
 
 server:
   port: 8090

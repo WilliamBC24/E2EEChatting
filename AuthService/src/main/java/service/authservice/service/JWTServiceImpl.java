@@ -1,0 +1,80 @@
+package service.authservice.service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import service.authservice.service.itf.JWTService;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+@Service
+public class JWTServiceImpl implements JWTService {
+    @Value("${JWT_SECRET}")
+    private String SECRET;
+    @Value("${JWT_EXPIRATION}")
+    private long EXPIRATION;
+    @Override
+    public String generateToken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        Date currentDate = new Date(System.currentTimeMillis());
+        return Jwts.builder()
+                .claims().add(claims)
+                .subject(username)
+                .issuedAt(currentDate)
+                .expiration(new Date(currentDate.getTime() + EXPIRATION))
+                .and()
+                .signWith(getSecretKey())
+                .compact();
+    }
+
+    @Override
+    public SecretKey getSecretKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    @Override
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    @Override
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    @Override
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+
+    @Override
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractClaim(token, Claims::getSubject);
+        return (username.equals(userDetails.getUsername()) && !tokenExpired(token));
+    }
+
+    @Override
+    public boolean tokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    @Override
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+}
