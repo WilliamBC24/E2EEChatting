@@ -4,10 +4,12 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: Microservice
-          uri: lb://Microservice
+        - id: AuthService
+          uri: lb://AuthService
           predicates:
-            - Path=/microservice/**
+            - Path=/authservice/**
+          filters:
+            - StripPrefix=1
   config:
     import: "optional:configserver:${CONFIG_URI}"
 
