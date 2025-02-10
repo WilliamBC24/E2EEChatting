@@ -44,7 +44,7 @@
 <div class="login-container">
     <h2>Member Login</h2>
 
-    <form id="login-form" action="/auth/login" method="post">
+    <form id="login-form" method="post">
         <div class="form-group">
             <input type="text" id="username" class="form-control" name="username" placeholder="Username" required>
         </div>
@@ -67,7 +67,7 @@
             };
             console.log(user);
 
-            fetch('http://localhost:8080/auth/login', {
+            fetch('http://localhost:8090/authservice/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

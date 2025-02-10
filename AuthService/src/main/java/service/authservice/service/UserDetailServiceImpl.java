@@ -4,8 +4,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import service.authservice.entity.Enum.Role;
 import service.authservice.entity.User;
 import service.authservice.repo.UserRepo;
+
+import java.util.List;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -23,7 +26,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
         return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
                 .password(user.getPassword())
-                .roles("USER")
+                .roles(user.getRoles()
+                        .stream()
+                        .map(Enum::name)
+                        .toArray(String[]::new))
                 .build();
+    }
+
+    public List<Role> getRolesByUsername(String username) {
+        return userRepo.findByUsername(username).getRoles();
     }
 }

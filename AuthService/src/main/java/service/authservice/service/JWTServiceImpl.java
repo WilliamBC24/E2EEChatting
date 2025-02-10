@@ -7,11 +7,14 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import service.authservice.entity.Enum.Role;
+import service.authservice.repo.UserRepo;
 import service.authservice.service.itf.JWTService;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -21,16 +24,26 @@ public class JWTServiceImpl implements JWTService {
     private String SECRET;
     @Value("${JWT_EXPIRATION}")
     private long EXPIRATION;
+    private final UserDetailServiceImpl userDetailServiceImpl;
+
+    public JWTServiceImpl(UserRepo userRepo, UserDetailServiceImpl userDetailServiceImpl) {
+        this.userDetailServiceImpl = userDetailServiceImpl;
+    }
+
     @Override
     public String generateToken(String username) {
+        return generateTokenWithRoles(username, userDetailServiceImpl.getRolesByUsername(username));
+    }
+
+    private String generateTokenWithRoles(String username, List<Role> roles) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", roles);
         Date currentDate = new Date(System.currentTimeMillis());
         return Jwts.builder()
-                .claims().add(claims)
+                .claims(claims)
                 .subject(username)
                 .issuedAt(currentDate)
                 .expiration(new Date(currentDate.getTime() + EXPIRATION))
-                .and()
                 .signWith(getSecretKey())
                 .compact();
     }

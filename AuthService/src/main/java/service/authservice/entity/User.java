@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import service.authservice.entity.Enum.Role;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -27,6 +29,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private Role role;
+    private List<Role> roles;
 }

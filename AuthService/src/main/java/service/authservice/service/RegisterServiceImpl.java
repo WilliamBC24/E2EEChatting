@@ -8,6 +8,8 @@ import service.authservice.repo.UserRepo;
 import service.authservice.entity.DTO.UserRegisterDTO;
 import service.authservice.service.itf.RegisterService;
 
+import java.util.List;
+
 @Service
 public class RegisterServiceImpl implements RegisterService {
     private final PasswordEncoder passwordEncoder;
@@ -31,7 +33,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(accountDTO.getUsername())
                 .password(encodedPassword)
                 .email(accountDTO.getEmail())
-                .role(Role.USER)
+                .roles(List.of(Role.USER))
                 .build();
         userRepo.save(newUser);
     }
