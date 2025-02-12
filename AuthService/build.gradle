@@ -39,6 +39,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    implementation 'io.github.nbaars:paseto4j-version4:2024.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 

@@ -20,9 +20,9 @@ import java.util.function.Function;
 
 @Service
 public class JWTServiceImpl implements JWTService {
-    @Value("${JWT_SECRET}")
+    @Value("${TOKEN_SECRET}")
     private String SECRET;
-    @Value("${JWT_EXPIRATION}")
+    @Value("${TOKEN_EXPIRATION}")
     private long EXPIRATION;
     private final UserDetailServiceImpl userDetailServiceImpl;
 

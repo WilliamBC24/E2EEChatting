@@ -92,8 +92,8 @@ services:
       DB_PASSWORD: ${USER_DB_PASSWORD}
       EUREKA_SERVER: ${EUREKA_SERVER}
       CONFIG_URI: ${CONFIG_URI}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      TOKEN_SECRET: ${TOKEN_SECRET}
+      TOKEN_EXPIRATION: ${TOKEN_EXPIRATION}
     depends_on:
       - postgres
       # - eureka
