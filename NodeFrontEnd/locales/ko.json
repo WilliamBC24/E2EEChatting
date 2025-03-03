@@ -1,0 +1,11 @@
+{
+	"login": {
+		"title": "로그인",
+		"form": {
+			"title": "회원 로그인",
+			"username": "사용자 이름",
+			"password": "비밀번호",
+			"login": "로그인"
+		}
+	}
+}

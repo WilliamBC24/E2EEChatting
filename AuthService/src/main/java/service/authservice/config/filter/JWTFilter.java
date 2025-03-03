@@ -7,23 +7,30 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import service.authservice.service.UserDetailServiceImpl;
+import service.authservice.entity.User;
+import service.authservice.repo.UserRepo;
 import service.authservice.service.itf.JWTService;
 
 import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
     private final ApplicationContext applicationContext;
-    public JWTFilter(JWTService jwtService, ApplicationContext applicationContext) {
+    private final UserRepo userRepo;
+
+    public JWTFilter(JWTService jwtService, ApplicationContext applicationContext, UserRepo userRepo) {
         this.jwtService = jwtService;
         this.applicationContext = applicationContext;
+        this.userRepo = userRepo;
     }
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -35,12 +42,19 @@ public class JWTFilter extends OncePerRequestFilter {
             username = jwtService.extractUsername(token);
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = applicationContext.getBean(UserDetailServiceImpl.class).loadUserByUsername(username);
-            if (jwtService.validateToken(token, userDetails)) {
+            User user = userRepo.findByUsername(username).get();
+            Set<GrantedAuthority> authorities = user.getRoles().stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                    .collect(Collectors.toSet());
+            if (jwtService.validateToken(token, user)) {
                 UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(user, null, authorities);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                //check the refresh token here
+                //if(refresh.validate())
+                //then if not, redirect to log in
             }
         }
         filterChain.doFilter(request, response);

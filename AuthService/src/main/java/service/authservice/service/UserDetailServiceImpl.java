@@ -9,6 +9,7 @@ import service.authservice.entity.User;
 import service.authservice.repo.UserRepo;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -20,7 +21,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
+        User user = userRepo.findByUsername(username).get();
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -33,7 +34,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 .build();
     }
 
-    public List<Role> getRolesByUsername(String username) {
-        return userRepo.findByUsername(username).getRoles();
+    public Set<Role> getRolesByUsername(String username) {
+        return userRepo.findByUsername(username).get().getRoles();
     }
 }

@@ -1,0 +1,11 @@
+{
+	"login": {
+		"title": "Đăng nhập",
+		"form": {
+			"title": "Đăng nhập thành viên",
+			"username": "Tên đăng nhập",
+			"password": "Mật khẩu",
+			"login": "Đăng nhập"
+		}
+	}
+}

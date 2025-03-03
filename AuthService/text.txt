@@ -1,0 +1,39 @@
+Login
+Reset Password
+Register Account
+View Account Info
+Edit Account
+Change Password
+View Homepage
+View Ongoing Events
+View Event Info
+Submit Application
+View Application Status
+View Inquiries List
+Send Inquiry
+View Answers
+Upload Required Docs
+View Inquiries List
+View Inquiry Details
+Answer Inquiry
+View Required Payments
+View Payment Details
+Verify Payment
+Confirm Enrolment
+Generate Payment Receipt
+View Application List
+View Application Details
+Accept Application
+Reject Application
+View System Settings
+Edit System Settings
+View User List
+View User Details
+Configure User Roles
+Delete User
+View Event Dashboard
+Create Event
+View Event Details
+Edit Event
+Delete Event
+

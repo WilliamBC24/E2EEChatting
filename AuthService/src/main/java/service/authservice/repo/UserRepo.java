@@ -1,15 +1,23 @@
 package service.authservice.repo;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import service.authservice.entity.Enum.Role;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import service.authservice.entity.DTO.BasicDetailDTO;
 import service.authservice.entity.User;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface UserRepo extends JpaRepository<User, Long> {
-    User findByUsername(String username);
+//    @EntityGraph(attributePaths = {"roles"})
+    Optional<User> findByUsername(String username);
 
     boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
+
+    @Query("SELECT u FROM User u JOIN FETCH u.roles WHERE u.username = :username")
+    Optional<User> findByUsernameWithRoles(@Param("username") String username);
 }
+

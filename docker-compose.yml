@@ -26,19 +26,19 @@ services:
   #     MONGO_INITDB_ROOT_USERNAME: ${MSG_DB_ROOT_USERNAME}
   #     MONGO_INITDB_ROOT_PASSWORD: ${MSG_DB_ROOT_PASSWORD}
   
-  # eureka:
-  #   build: 
-  #     context: ./Eureka
-  #   restart: always
-  #   ports:
-  #     - "${EUREKA_PORT}:${EUREKA_PORT}"
-  #   networks:
-  #     - microservice
-  #   volumes:
-  #     - ./src:/eureka/src
-  #     - ./build:/eureka/build      
-  #   environment:
-  #    CONFIG_URI: ${CONFIG_URI}
+  eureka:
+    build: 
+      context: ./Eureka
+    restart: always
+    ports:
+      - "${EUREKA_PORT}:${EUREKA_PORT}"
+    networks:
+      - microservice
+    volumes:
+      - ./src:/eureka/src
+      - ./build:/eureka/build      
+    environment:
+     CONFIG_URI: ${CONFIG_URI}
 
 
   # gateway:
@@ -57,23 +57,23 @@ services:
   #     CONFIG_URI: ${CONFIG_URI}
   #   depends_on:
   #     - eureka   
-  # #     - config
+  #     - config
 
-  # config:
-  #   build:
-  #     context: ./Config
-  #   restart: always
-  #   ports:
-  #     - "${CONFIG_PORT}:${CONFIG_PORT}"     
-  #   networks:
-  #     - microservice
-  #   volumes:
-  #     - ./src:/config/src
-  #     - ./build:/config/build
-  #   environment:
-  #     EUREKA_SERVER: ${EUREKA_SERVER}
-  #     GITHUB_PASS: ${GITHUB_PASS}
-  #     GITHUB_CONFIG_URI: ${GITHUB_CONFIG_URI}  
+  config:
+    build:
+      context: ./Config
+    restart: always
+    ports:
+      - "${CONFIG_PORT}:${CONFIG_PORT}"     
+    networks:
+      - microservice
+    volumes:
+      - ./src:/config/src
+      - ./build:/config/build
+    environment:
+      EUREKA_SERVER: ${EUREKA_SERVER}
+      GITHUB_PASS: ${GITHUB_PASS}
+      GITHUB_CONFIG_URI: ${GITHUB_CONFIG_URI}  
 
   authservice:
     build:
@@ -94,10 +94,11 @@ services:
       CONFIG_URI: ${CONFIG_URI}
       TOKEN_SECRET: ${TOKEN_SECRET}
       TOKEN_EXPIRATION: ${TOKEN_EXPIRATION}
-    depends_on:
-      - postgres
-      # - eureka
-      # - config
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    # depends_on:
+    #   - postgres
+    #   - eureka
+    #   - config
 
   # nodefront:
   #   build: 
@@ -105,8 +106,8 @@ services:
   #     dockerfile: Dockerfile
   #   ports:
   #     - "3000:3000"
-  #   # environment:
-  #   #   NODE_ENV: production
+  #   environment:
+  #     NODE_ENV: production
   #   restart: always
 
 networks:
@@ -115,4 +116,4 @@ networks:
 
 volumes:
   postgres_data:
-  mongo_data:
+  # mongo_data:
