@@ -8,5 +8,9 @@ spring:
 
 logging:
   level:
-    root: INFO
-    org.springframework: WARN
+    root: info
+    org:
+      springframework:
+        security: debug
+    service:
+      authservice: debug

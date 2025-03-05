@@ -1,13 +1,12 @@
 spring:
   application:
     name: Eureka
-#  config:
-#    import: "optional:configserver:${CONFIG_URI}"
 
 eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
-
+  instance:
+    lease-renewal-interval-in-seconds: 5
 server:
   port: 8761

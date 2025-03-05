@@ -26,6 +26,8 @@ spring:
   servlet:
     multipart:
       enabled: true
+  config:
+    import: "optional:configserver:"
 
 server:
   port: 8080

@@ -63,7 +63,7 @@
                 password: document.getElementById('password').value
             };
 
-            fetch('http://localhost:8080/auth/login', {
+            fetch('http://localhost:8090/authservice/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -74,8 +74,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data) {
-                    alert(JSON.stringify(data))
-                    localStorage.setItem("user", JSON.stringify(data))
+                    alert(JSON.parse(data))
+                    // localStorage.setItem("user", JSON.stringify(data))
                     //setup login session then redirect to home page
                 } else {
                     alert("Invalid credentials");
