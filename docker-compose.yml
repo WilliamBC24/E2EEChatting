@@ -28,7 +28,7 @@ services:
   
   eureka:
     build: 
-      context: ./Eureka
+      context: ./eureka
     restart: always
     ports:
       - "${EUREKA_PORT}:${EUREKA_PORT}"
@@ -41,27 +41,27 @@ services:
      CONFIG_URI: ${CONFIG_URI}
 
 
-  # gateway:
-  #   build:
-  #     context: ./Gateway
-  #   restart: always
-  #   ports:
-  #     - "${GATEWAY_PORT}:${GATEWAY_PORT}"
-  #   networks:
-  #     - microservice
-  #   volumes:
-  #     - ./src:/gateway/src
-  #     - ./build:/gateway/build
-  #   environment:
-  #     EUREKA_SERVER: ${EUREKA_SERVER}  
-  #     CONFIG_URI: ${CONFIG_URI}
-  #   depends_on:
-  #     - eureka   
-  #     - config
+  gateway:
+    build:
+      context: ./gateway
+    restart: always
+    ports:
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
+    networks:
+      - microservice
+    volumes:
+      - ./src:/gateway/src
+      - ./build:/gateway/build
+    environment:
+      EUREKA_SERVER: ${EUREKA_SERVER}  
+      CONFIG_URI: ${CONFIG_URI}
+    depends_on:
+      - eureka   
+      - config
 
   config:
     build:
-      context: ./Config
+      context: ./config
     restart: always
     ports:
       - "${CONFIG_PORT}:${CONFIG_PORT}"     
@@ -77,10 +77,10 @@ services:
 
   authservice:
     build:
-      context: ./AuthService
+      context: ./auth-service
     restart: always
-    ports:
-      - "${AUTHSERVICE_PORT}:${AUTHSERVICE_PORT}"
+    # ports:
+      # - "${AUTHSERVICE_PORT}:${AUTHSERVICE_PORT}"
     networks:
       - microservice
     volumes:
@@ -100,15 +100,15 @@ services:
     #   - eureka
     #   - config
 
-  # nodefront:
-  #   build: 
-  #     context: ./NodeFrontEnd
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     NODE_ENV: production
-  #   restart: always
+  node:
+    build: 
+      context: ./node
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    restart: always
 
 networks:
   microservice:

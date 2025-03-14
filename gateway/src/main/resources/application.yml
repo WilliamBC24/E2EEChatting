@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: authservice
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/authservice/**
+          filters:
+            - StripPrefix=1
+  config:
+    import: "optional:configserver:${CONFIG_URI}"
+
+server:
+  port: 8090
+
