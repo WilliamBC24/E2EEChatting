@@ -37,8 +37,6 @@ services:
     volumes:
       - ./src:/eureka/src
       - ./build:/eureka/build      
-    environment:
-     CONFIG_URI: ${CONFIG_URI}
 
 
   gateway:
