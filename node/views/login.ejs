@@ -63,7 +63,7 @@
                 password: document.getElementById('password').value
             };
 
-            fetch('http://localhost:8090/authservice/auth/login', {
+            fetch('/gateway/authservice/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
