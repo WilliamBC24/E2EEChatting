@@ -49,4 +49,9 @@ public class AuthController {
         registerServiceImpl.register(accountDTO);
         return ResponseEntity.ok("Registered Successfully");
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok("OK");
+    }
 }
