@@ -6,8 +6,8 @@ ENV GRADLE_USER_HOME=/home/gradle/caches
 
 COPY build.gradle settings.gradle gradlew ./
 COPY gradle gradle
-
-RUN --mount=type=cache,target=$GRADLE_USER_HOME gradle dependencies --no-daemon
+	
+RUN --mount=type=cache,target=$GRADLE_USER_HOME gradle build --no-daemon --dry-run
 
 COPY . .
 

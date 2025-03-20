@@ -20,7 +20,20 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build & Push Each Service
+      - name: Set Up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Build & Push Each Service with Cache
         run: |
           DOCKER_USER="${{ secrets.DOCKER_USERNAME }}"
           
@@ -28,9 +41,13 @@ jobs:
             folder_name=$(basename $folder)
             image_name="$DOCKER_USER/$folder_name:latest"
 
+            echo "==============================="
             echo "Building image for $folder_name"
-            docker build -t $image_name $folder
 
-            echo "Pushing image for $folder_name"
-            docker push $image_name
+            docker buildx build \
+              --cache-from=type=registry,ref=$image_name \
+              --cache-to=type=inline \
+              --tag $image_name \
+              --push \
+              $folder
           done
