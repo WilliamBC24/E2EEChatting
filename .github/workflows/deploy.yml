@@ -1,4 +1,4 @@
-name: Workflow
+name: Build & Push Docker Images
 
 on:
   push:
@@ -20,16 +20,16 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Find and Build All Dockerfiles
+      - name: Build & Push Each Service
         run: |
-          repo_name="prod"
-
+          DOCKER_USER="${{ secrets.DOCKER_USERNAME }}"
+          
           for folder in $(find . -type f -name "Dockerfile" -exec dirname {} \;); do
             folder_name=$(basename $folder)
-            image_name="$repo_name/$folder_name:latest"
-            
+            image_name="$DOCKER_USER/$folder_name:latest"
+
             echo "Building image for $folder_name"
-            docker build -t $image_name --cache-from=type=registry,ref=$image_name $folder
+            docker build -t $image_name $folder
 
             echo "Pushing image for $folder_name"
             docker push $image_name
