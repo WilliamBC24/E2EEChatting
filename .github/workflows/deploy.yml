@@ -20,9 +20,26 @@ jobs:
         id: changed_files
         run: |
           echo "Detecting changed directories..."
-          CHANGED_DIRS=$(git diff --name-only HEAD^ HEAD | awk -F'/' '{print $1}' | sort -u | uniq)
-          echo "CHANGED_DIRS=$CHANGED_DIRS" >> $GITHUB_ENV
+          
+          # Define relevant service folders
+          SERVICES=("auth-service" "config" "eureka" "gateway" "node")
+
+          # Get changed directories from the last commit
+          CHANGED_DIRS=$(git diff --name-only HEAD^ HEAD | awk -F'/' '{print $1}' | sort -u | uniq | grep -E "$(IFS='|'; echo "${SERVICES[*]}")" || true)
+
+          # Ensure script doesn't break if no services changed
+          if [[ -z "$CHANGED_DIRS" ]]; then
+            echo "No relevant services changed. Skipping build."
+            echo "changed_dirs=" >> $GITHUB_ENV
+            echo "changed_dirs=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
           echo "Changed directories: $CHANGED_DIRS"
+
+          # Save to GitHub outputs for later steps
+          echo "changed_dirs=$(echo $CHANGED_DIRS | tr '\n' ' ')" >> $GITHUB_ENV
+          echo "changed_dirs=$(echo $CHANGED_DIRS | tr '\n' ' ')" >> $GITHUB_OUTPUT
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -44,16 +61,16 @@ jobs:
             gradle-${{ runner.os }}-
 
       - name: Build & Push Changed Services
+        if: env.changed_dirs != ''
         run: |
           DOCKER_USER="${{ secrets.DOCKER_USERNAME }}"
 
           for folder in $CHANGED_DIRS; do
             if [ -f "$folder/Dockerfile" ]; then
-              folder_name=$(basename $folder)
-              IMAGE_NAME="$DOCKER_USER/$folder_name:latest"
+              IMAGE_NAME="$DOCKER_USER/$folder:latest"
 
               echo "==============================="
-              echo "Building image for $folder_name"
+              echo "Building image for $folder"
 
               docker buildx build \
                 --cache-from=type=registry,ref=$IMAGE_NAME \
@@ -61,5 +78,7 @@ jobs:
                 --tag $IMAGE_NAME \
                 --push \
                 $folder
+            else
+              echo "Skipping $folder - No Dockerfile found."
             fi
           done
