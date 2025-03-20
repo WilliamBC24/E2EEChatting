@@ -5,7 +5,7 @@ spring:
     gateway:
       routes:
         - id: authservice
-          uri: lb://AUTH-SERVICE
+          uri: http://auth-service-service:8080
           predicates:
             - Path=/authservice/**
           filters:
