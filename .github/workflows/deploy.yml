@@ -1,4 +1,4 @@
-name: Build & Push Docker Images
+name: Build & Push Changed Docker Images
 
 on:
   push:
@@ -13,6 +13,16 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Needed for change detection
+
+      - name: Get Changed Folders
+        id: changed_files
+        run: |
+          echo "Detecting changed directories..."
+          CHANGED_DIRS=$(git diff --name-only HEAD^ HEAD | awk -F'/' '{print $1}' | sort -u | uniq)
+          echo "CHANGED_DIRS=$CHANGED_DIRS" >> $GITHUB_ENV
+          echo "Changed directories: $CHANGED_DIRS"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -33,21 +43,23 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
-      - name: Build & Push Each Service with Cache
+      - name: Build & Push Changed Services
         run: |
           DOCKER_USER="${{ secrets.DOCKER_USERNAME }}"
-          
-          for folder in $(find . -type f -name "Dockerfile" -exec dirname {} \;); do
-            folder_name=$(basename $folder)
-            image_name="$DOCKER_USER/$folder_name:latest"
 
-            echo "==============================="
-            echo "Building image for $folder_name"
+          for folder in $CHANGED_DIRS; do
+            if [ -f "$folder/Dockerfile" ]; then
+              folder_name=$(basename $folder)
+              IMAGE_NAME="$DOCKER_USER/$folder_name:latest"
 
-            docker buildx build \
-              --cache-from=type=registry,ref=$image_name \
-              --cache-to=type=inline \
-              --tag $image_name \
-              --push \
-              $folder
+              echo "==============================="
+              echo "Building image for $folder_name"
+
+              docker buildx build \
+                --cache-from=type=registry,ref=$IMAGE_NAME \
+                --cache-to=type=inline \
+                --tag $IMAGE_NAME \
+                --push \
+                $folder
+            fi
           done
