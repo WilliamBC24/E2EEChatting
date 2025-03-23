@@ -5,10 +5,9 @@ import org.springframework.stereotype.Service;
 import service.authservice.entity.User;
 import service.authservice.entity.Enum.Role;
 import service.authservice.repo.UserRepo;
-import service.authservice.entity.DTO.UserRegisterDTO;
+import service.authservice.entity.dto.UserRegisterDTO;
 import service.authservice.service.itf.RegisterService;
 
-import java.util.List;
 import java.util.Set;
 
 @Service

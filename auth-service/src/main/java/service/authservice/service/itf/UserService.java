@@ -1,6 +1,6 @@
 package service.authservice.service.itf;
 
-import service.authservice.entity.DTO.BasicDetailDTO;
+import service.authservice.entity.dto.BasicDetailDTO;
 import service.authservice.entity.User;
 
 import java.util.Map;

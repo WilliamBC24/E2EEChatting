@@ -5,11 +5,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,12 +24,10 @@ import java.util.stream.Collectors;
 @Component
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
-    private final ApplicationContext applicationContext;
     private final UserRepo userRepo;
 
-    public JWTFilter(JWTService jwtService, ApplicationContext applicationContext, UserRepo userRepo) {
+    public JWTFilter(JWTService jwtService, UserRepo userRepo) {
         this.jwtService = jwtService;
-        this.applicationContext = applicationContext;
         this.userRepo = userRepo;
     }
     @Override
@@ -42,7 +40,8 @@ public class JWTFilter extends OncePerRequestFilter {
             username = jwtService.extractUsername(token);
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepo.findByUsername(username).get();
+            User user = userRepo.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User does not exist"));
             Set<GrantedAuthority> authorities = user.getRoles().stream()
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
                     .collect(Collectors.toSet());
@@ -52,9 +51,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } else {
-                //check the refresh token here
-                //if(refresh.validate())
-                //then if not, redirect to log in
+                //check the refresh token here, if(refresh.validate()),then if not, redirect to log in
             }
         }
         filterChain.doFilter(request, response);

@@ -8,7 +8,6 @@ import service.authservice.entity.Enum.Role;
 import service.authservice.entity.User;
 import service.authservice.repo.UserRepo;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -21,10 +20,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username).get();
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
                 .password(user.getPassword())
                 .roles(user.getRoles()
@@ -35,6 +32,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     public Set<Role> getRolesByUsername(String username) {
-        return userRepo.findByUsername(username).get().getRoles();
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"))
+                .getRoles();
     }
 }

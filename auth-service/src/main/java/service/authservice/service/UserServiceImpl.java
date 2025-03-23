@@ -1,10 +1,9 @@
 package service.authservice.service;
 
-import org.springframework.cache.CacheManager;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import service.authservice.entity.DTO.BasicDetailDTO;
+import service.authservice.entity.dto.BasicDetailDTO;
 import service.authservice.entity.RefreshToken;
 import service.authservice.entity.User;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import service.authservice.service.itf.UserService;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -40,7 +38,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String, String> verify(User user) {
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        User activeUser = userRepo.findByUsername(user.getUsername()).get();
+        User activeUser = userRepo.findByUsername(user.getUsername())
+                .orElseThrow(() -> new IllegalStateException("User not found"));
         if (!auth.isAuthenticated()) {
             return Map.of();
         }

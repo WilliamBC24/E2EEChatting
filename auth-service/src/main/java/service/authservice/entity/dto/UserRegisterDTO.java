@@ -1,4 +1,4 @@
-package service.authservice.entity.DTO;
+package service.authservice.entity.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

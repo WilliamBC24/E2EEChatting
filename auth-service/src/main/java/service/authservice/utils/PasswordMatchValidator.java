@@ -2,13 +2,14 @@ package service.authservice.utils;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import service.authservice.entity.DTO.UserRegisterDTO;
+import service.authservice.entity.dto.UserRegisterDTO;
 
 public class PasswordMatchValidator
         implements ConstraintValidator<PasswordMatch, Object> {
 
     @Override
     public void initialize(PasswordMatch constraintAnnotation) {
+        //No initialization required
     }
     @Override
     public boolean isValid(Object obj, ConstraintValidatorContext context){

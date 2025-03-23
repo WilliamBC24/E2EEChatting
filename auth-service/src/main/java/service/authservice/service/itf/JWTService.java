@@ -1,7 +1,6 @@
 package service.authservice.service.itf;
 
 import io.jsonwebtoken.Claims;
-import org.springframework.security.core.userdetails.UserDetails;
 import service.authservice.entity.User;
 
 import javax.crypto.SecretKey;

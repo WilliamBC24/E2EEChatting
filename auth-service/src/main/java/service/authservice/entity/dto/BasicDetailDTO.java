@@ -1,8 +1,6 @@
-package service.authservice.entity.DTO;
+package service.authservice.entity.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import service.authservice.entity.Enum.Role;
@@ -23,3 +21,4 @@ public class BasicDetailDTO {
                 .collect(Collectors.toSet());
     }
 }
+
