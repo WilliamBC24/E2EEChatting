@@ -37,6 +37,10 @@ app.get('/login', (req, res) => {
     res.render('login', { lang: res.__ });
 });
 
+app.get('/register', (req, res) => {
+    res.render('register', { lang: res.__})
+})
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });

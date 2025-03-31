@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= lang('register.title') %></title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      .register-container {
+        width: 350px;
+        margin: 100px auto;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+      }
+      .register-container h2 {
+        margin-bottom: 20px;
+        color: #444;
+      }
+      .form-control {
+        border-radius: 20px;
+      }
+      .btn-register {
+        border-radius: 20px;
+        background-color: #28d461;
+        color: white;
+      }
+      .login-link {
+        margin-top: 10px;
+        color: #aaa;
+        font-size: 0.9em;
+      }
+      .login-link a {
+        color: #888;
+        text-decoration: none;
+      }
+      .login-link a:hover {
+        color: #28d461;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-container">
+      <h2><%= lang('register.form.title') %></h2>
+
+      <form id="register-form" method="post">
+        <div class="form-group">
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            name="username"
+            placeholder="<%= lang('register.form.username') %>"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            name="email"
+            placeholder="<%= lang('register.form.email') %>"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            name="password"
+            placeholder="<%= lang('register.form.password') %>"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            id="passwordMatch"
+            class="form-control"
+            name="passwordMatch"
+            placeholder="<%= lang('register.form.passwordMatch') %>"
+            required
+          />
+        </div>
+        <button
+          type="button"
+          onclick="submitRegister()"
+          class="btn btn-register btn-block"
+        >
+          <%= lang('register.form.register') %>
+        </button>
+      </form>
+
+      <p class="login-link">
+        <%= lang('register.form.alreadyHaveAccount') %>
+        <a href="/login"><%= lang('register.form.loginHere') %></a>
+      </p>
+
+      <script>
+        const submitRegister = () => {
+          event.preventDefault();
+
+          const user = {
+            username: document.getElementById("username").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            passwordMatch: document.getElementById("passwordMatch").value,
+          };
+
+          if (user.password !== user.passwordMatch) {
+            alert("Passwords do not match!");
+            return;
+          }
+
+          Promise.allSettled([
+            fetch("/gateway/auth/auth/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(user),
+              credentials: "include",
+            }),
+            fetch("/gateway/message/user/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username: user.username }),
+              credentials: "include",
+            }),
+          ])
+            .then(async ([authResult, chatResult]) => {
+              // Convert responses to JSON
+              const authData =
+                authResult.status === "fulfilled"
+                  ? await authResult.value.json()
+                  : null;
+              const chatData =
+                chatResult.status === "fulfilled"
+                  ? await chatResult.value.json()
+                  : null;
+
+              if (authData?.success && chatData?.success) {
+                alert("Registration successful!");
+                window.location.href = "/login";
+              } else {
+                alert("Registration partially failed! Rolling back...");
+
+                // If Auth succeeded but Chat failed, delete the user from Auth Service
+                if (authData?.success && !chatData?.success) {
+                  fetch("/gateway/authservice/auth/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: user.username }),
+                    credentials: "include",
+                  })
+                    .then(() => alert("Rolled back user from Auth Service"))
+                    .catch(() =>
+                      alert("Rollback failed! Manual cleanup needed.")
+                    );
+                }
+
+                // If Chat succeeded but Auth failed, delete the user from Chat Service
+                if (!authData?.success && chatData?.success) {
+                  fetch("/gateway/chatservice/user/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: user.username }),
+                    credentials: "include",
+                  })
+                    .then(() => alert("Rolled back user from Chat Service"))
+                    .catch(() =>
+                      alert("Rollback failed! Manual cleanup needed.")
+                    );
+                }
+              }
+            })
+            .catch((error) => console.error("Error:", error));
+        };
+      </script>
+    </div>
+  </body>
+</html>

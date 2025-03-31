@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: message-service
+  data:
+    mongodb:
+      uri: mongodb://root:root@127.0.0.1:27018/message?authSource=admin
+#      uri: mongodb://mongo-service:27018/message
+      database: message
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core: DEBUG
