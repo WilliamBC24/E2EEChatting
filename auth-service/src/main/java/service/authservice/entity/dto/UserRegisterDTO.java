@@ -3,11 +3,13 @@ package service.authservice.entity.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import service.authservice.utils.PasswordMatch;
 
 @Data
 @PasswordMatch
+@AllArgsConstructor
 public class UserRegisterDTO {
     @NotNull
     @NotEmpty
