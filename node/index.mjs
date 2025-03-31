@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 i18n.configure({
     locales: ['en', 'vi', 'ko'],
-    directory: path.join(__dirname, 'locales'),
+    directory: path.join(__dirname, '/src/locales'),
     defaultLocale: 'en',
     cookie: 'lang',
     queryParameter: 'lang',
@@ -18,6 +18,8 @@ i18n.configure({
 });
 
 const app = express();
+//To provide css and js
+app.use(express.static('public'));
 app.use(i18n.init);
 app.use(cors({
     origin: "http://localhost:3000",
@@ -39,6 +41,10 @@ app.get('/login', (req, res) => {
 
 app.get('/register', (req, res) => {
     res.render('register', { lang: res.__})
+})
+
+app.get('/chat', (req, res) => {
+    res.render('chat', { lang: res.__})
 })
 
 app.get('/', (req, res) => {

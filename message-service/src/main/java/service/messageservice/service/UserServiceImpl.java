@@ -18,7 +18,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-
     public void connect(User user) {
         userRepo.findByUsername(user.getUsername())
                 .switchIfEmpty(Mono.error(new RuntimeException("User not found")))

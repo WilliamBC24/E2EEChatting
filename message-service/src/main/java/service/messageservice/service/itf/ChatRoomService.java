@@ -1,10 +1,12 @@
 package service.messageservice.service.itf;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import service.messageservice.entity.ChatParticipants;
+import service.messageservice.entity.ChatRoom;
+
+import java.util.List;
 
 public interface ChatRoomService {
-    Mono<String> getChatRoomId(String sender, String receiver, boolean newRoom);
-    Mono<String> createChat(String sender, String receiver);
-    Mono<ChatParticipants> getChatParticipants(String chatId);
+    Mono<String> createChat(List<String> participants);
+    Flux<ChatRoom> getChats(String username);
 }

@@ -8,24 +8,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import service.messageservice.entity.ChatRoom;
 import service.messageservice.entity.User;
+import service.messageservice.service.ChatRoomServiceImpl;
 import service.messageservice.service.UserServiceImpl;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class UserMapping {
     private final UserServiceImpl userService;
-    public UserMapping(UserServiceImpl userService) {
+    private final ChatRoomServiceImpl chatRoomService;
+    public UserMapping(UserServiceImpl userService, ChatRoomServiceImpl chatRoomService) {
         this.userService = userService;
+        this.chatRoomService = chatRoomService;
     }
 
     //This makes it listen from /app/connect, which is the app destination prefix
     @MessageMapping("/connect")
     //This broadcast to the broker
     @SendTo("/broker/topic")
-    public User connect(User user) {
+    public Mono<List<ChatRoom>> connect(User user) {
         userService.connect(user);
-        return user;
+        return chatRoomService.getChats(user.getUsername())
+                .collectList();
     }
 
     @MessageMapping("/disconnect")

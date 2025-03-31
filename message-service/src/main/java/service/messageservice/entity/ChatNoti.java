@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 //This is used to display message
 public class ChatNoti {
-    private String id;
     private String sender;
-    private String receiver;
+    private String chatId;
     private String content;
 }

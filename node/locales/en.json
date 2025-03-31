@@ -1,24 +1,11 @@
 {
 	"login": {
-		"title": "Login",
+		"title": "login.title",
 		"form": {
-			"title": "Member Login",
-			"username": "Username",
-			"password": "Password",
-			"login": "Login"
-		}
-	},
-	"register": {
-		"title": "Register",
-		"form": {
-			"title": "Register",
-			"username": "Username",
-			"email": "Email",
-			"password": "Password",
-			"passwordMatch": "Confirm password",
-			"register": "Register",
-			"alreadyHaveAccount": "Already have an account?",
-			"loginHere": "Login here"
+			"title": "login.form.title",
+			"username": "login.form.username",
+			"password": "login.form.password",
+			"login": "login.form.login"
 		}
 	}
 }

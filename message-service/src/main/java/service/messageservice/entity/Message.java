@@ -14,13 +14,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Chat {
+public class Message {
     @Id
     private String id;
-    //ChatRoom ID
     private String chatId;
     private String sender;
-    private String receiver;
-    private String message;
+    private String content;
     private Date timestamp;
 }

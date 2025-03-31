@@ -1,89 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title><%= lang('login.title') %></title>
-    <link rel="stylesheet" 
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .login-container {
-            width: 320px;
-            margin: 100px auto;
-            background: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            text-align: center;
-        }
-        .login-container h2 {
-            margin-bottom: 20px;
-            color: #444;
-        }
-        .form-control {
-            border-radius: 20px;
-        }
-        .btn-login {
-            border-radius: 20px;
-            background-color: #28D461;
-            color: white;
-        }
-        .forgot-password {
-            margin-top: 10px;
-            color: #aaa;
-            font-size: 0.9em;
-        }
-        .forgot-password a {
-            color: #888;
-            text-decoration: none;
-        }
-        .forgot-password a:hover {
-            color: #28D461;
-        }
-    </style>
-</head>
-<body>
-<div class="login-container">
-    <h2><%= lang('login.form.title') %></h2>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/css/login.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <h2><%= lang('login.form.title') %></h2>
 
-    <form id="login-form" method="post">
+      <form id="login-form" method="post">
         <div class="form-group">
-            <input type="text" id="username" class="form-control" name="username" placeholder="<%= lang('login.form.username') %>" required>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            name="username"
+            placeholder="<%= lang('login.form.username') %>"
+            required
+          />
         </div>
         <div class="form-group">
-            <input type="password" id="password" class="form-control" name="password" placeholder="<%= lang('login.form.password') %>" required>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            name="password"
+            placeholder="<%= lang('login.form.password') %>"
+            required
+          />
         </div>
-        <button type="button" onclick="submitLogin()" class="btn btn-login btn-block"><%= lang('login.form.login') %></button>
-    </form>
-    
-    <script>
-        const submitLogin = () => {
-            event.preventDefault();
-            
-            const user = {
-                username: document.getElementById('username').value,
-                password: document.getElementById('password').value
-            };
-
-            fetch('/gateway/authservice/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user),
-                credentials:"include"
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    alert(JSON.parse(data))
-                    // localStorage.setItem("user", JSON.stringify(data))
-                    //setup login session then redirect to home page
-                } else {
-                    alert("Invalid credentials");
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    </script>
-</div>
-</body>
+        <button
+          type="button"
+          onclick="submitLogin()"
+          class="btn btn-login btn-block"
+        >
+          <%= lang('login.form.login') %>
+        </button>
+      </form>
+    </div>
+  </body>
+  <script src="/js/login.js"></script>
 </html>
