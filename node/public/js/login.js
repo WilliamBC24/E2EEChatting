@@ -1,12 +1,14 @@
+'use strict'
+
 const submitLogin = () => {
-    event.preventDefault();
 
     const user = {
       username: document.getElementById("username").value,
       password: document.getElementById("password").value,
     };
 
-    fetch("/gateway/authservice/auth/login", {
+    // fetch("/gateway/authservice/auth/login", {
+    fetch("http://localhost:8090/auth/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,9 +19,8 @@ const submitLogin = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data) {
-          alert(JSON.parse(data));
-          // localStorage.setItem("user", JSON.stringify(data))
-          //setup login session then redirect to home page
+          localStorage.setItem("user", JSON.stringify(data));
+          window.location.href = "/chat";
         } else {
           alert("Invalid credentials");
         }

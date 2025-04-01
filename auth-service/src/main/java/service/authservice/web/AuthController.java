@@ -32,7 +32,7 @@ public class AuthController {
         Map<String, String> map = userServiceImpl.verify(user);
         CookieUtil.setCookie(response, "jwt", map.get("jwt"), 30000);
         CookieUtil.setCookie(response, "refresh", map.get("refresh"), 30000);
-        return ResponseEntity.ok("OK");
+        return ResponseEntity.ok(user.getUsername());
     }
 
     @PostMapping("/register")

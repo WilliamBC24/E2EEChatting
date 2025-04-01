@@ -13,3 +13,6 @@ logging:
         data:
           mongodb:
             core: DEBUG
+
+server:
+  port: 8081

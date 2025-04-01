@@ -1,4 +1,4 @@
-
-app.post('/users', (req, res) => {
-    res.send('User created');
-});
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));

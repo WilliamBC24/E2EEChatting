@@ -24,7 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         //Location where server accepts messages
         registry.setApplicationDestinationPrefixes("/app");
         //For P2P
-        //Make a ChatRoom collection, then for the destination, do /dest/chat/chatID
+        //For sending to user, with current setup of sending to chat rooms, this is redundant
         registry.setUserDestinationPrefix(("/dest"));
     }
 
@@ -47,6 +47,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         //Origin should be frontend.com
         //Used to establish connection when user opens the tab for the web, at frontend.com/ws
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("http://localhost:3000").withSockJS();
     }
 }
