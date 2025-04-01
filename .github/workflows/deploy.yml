@@ -22,7 +22,7 @@ jobs:
           echo "Detecting changed directories..."
           
           # Define relevant service folders
-          SERVICES=("auth-service" "config" "eureka" "gateway" "node")
+          SERVICES=("auth-service" "config" "eureka" "gateway" "node" "message-service")
 
           # Get changed directories from the last commit
           changed_dirs=$(git diff --name-only HEAD^ HEAD | awk -F'/' '{print $1}' | sort -u | uniq | grep -E "$(IFS='|'; echo "${SERVICES[*]}")" || true)
