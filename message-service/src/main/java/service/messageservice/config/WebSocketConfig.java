@@ -47,6 +47,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         //Origin should be frontend.com
         //Used to establish connection when user opens the tab for the web, at frontend.com/ws
-        registry.addEndpoint("/ws").setAllowedOriginPatterns("http://localhost:3000").withSockJS();
+        registry.addEndpoint("/ws").withSockJS();
     }
 }

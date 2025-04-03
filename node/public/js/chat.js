@@ -120,11 +120,12 @@ const appendUserToList = (u, target) => {
 // };
 
 document.addEventListener("DOMContentLoaded", () => {
-  username = JSON.parse(localStorage.getItem("user"));
-  if (!username) {
-    alert("Can't find user in local storage");
-    return;
-  }
+  username = "sonbui";
+  // username = JSON.parse(localStorage.getItem("user"));
+  // if (!username) {
+  //   alert("Can't find user in local storage");
+  //   return;
+  // }
   connectedUser.textContent = username;
   connect();
 });
