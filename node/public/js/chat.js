@@ -8,7 +8,8 @@ const logout = document.querySelector("#logout");
 const connectedUsersList = document.querySelector(".connectedUsers");
 const connectedUser = document.querySelector("#connected-user");
 
-const socket = new SockJS("http://localhost:8090/message/ws");
+// const socket = new SockJS("http://localhost:8090/message/ws");
+const socket = new WebSocket("http://localhost:8090/message/ws");
 
 let stompClient = null;
 let username = null;

@@ -25,7 +25,7 @@ spring:
             - StripPrefix=1
         - id: message-service
 #          uri: http://message-service-service:8081
-          uri: h`ttp://localhost:8081
+          uri: http://localhost:8081
           predicates:
             - Path=/message/**
           filters:
