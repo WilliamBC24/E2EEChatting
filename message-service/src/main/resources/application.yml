@@ -3,8 +3,8 @@ spring:
     name: message-service
   data:
     mongodb:
-      uri: ${DB_URI}
-      database: ${DB_DB}
+      uri: ${URI}
+#      database: ${DB}
 #      username: ${USERNAME}
 #      password: ${PASSWORD}
 #      host: ${HOST}
