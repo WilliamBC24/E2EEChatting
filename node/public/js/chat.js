@@ -17,7 +17,7 @@ const connectedUser = document.querySelector("#connected-user");
 //it wont go to any destination, just to the server
 //you would have to registerWebSocketHandler to handle it
 //which introduces complexity
-const socket = new WebSocket("ws://gateway/message/ws");
+const socket = new WebSocket("ws://sonbui.com/gateway/message/ws");
 
 socket.addEventListener('open', event => {
   console.log('WebSocket connection established!');
