@@ -17,7 +17,7 @@ const connectedUser = document.querySelector("#connected-user");
 //it wont go to any destination, just to the server
 //you would have to registerWebSocketHandler to handle it
 //which introduces complexity
-const socket = new WebSocket("ws://gateway-service/message/ws");
+const socket = new WebSocket("ws://gateway/message/ws");
 
 socket.addEventListener('open', event => {
   console.log('WebSocket connection established!');
@@ -43,7 +43,7 @@ const connect = () => {
 // await is basically a checkpoint
 // no need to worry about memory usage as the consts are short-lived 
 const onConnected = async () => {
-  const res = await fetch("http://gateway-service/message/user/connect", {
+  const res = await fetch("/gateway/message/user/connect", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const onConnected = async () => {
 const onError = () => {};
 
 const getOnlineUserList = async () => {
-  const res = await fetch('http://gateway-service/message/user/users', {
+  const res = await fetch('/gateway/message/user/users', {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
