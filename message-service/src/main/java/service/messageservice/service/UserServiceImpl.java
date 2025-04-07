@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import service.messageservice.entity.User;
+import service.messageservice.entity.dto.UserDTO;
 import service.messageservice.entity.enums.STATUS;
 import service.messageservice.repo.UserRepo;
 import service.messageservice.service.itf.UserService;
@@ -18,27 +19,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void connect(User user) {
-        userRepo.findByUsername(user.getUsername())
-                .switchIfEmpty(Mono.error(new RuntimeException("User not found")))
+    public Mono<User> connect(UserDTO userDTO) {
+        return userRepo.findByUsername(userDTO.getUsername())
+                .switchIfEmpty(Mono.error(new RuntimeException("User not found when trying to connect")))
                 .flatMap(u -> {
                     u.setStatus(STATUS.ONLINE);
                     return userRepo.save(u);
                 })
-                .doOnError(e -> log.error("Error connecting: {}", String.valueOf(e)))
-                .subscribe();
+                .doOnError(e -> log.error("Error connecting: {}", String.valueOf(e)));
     }
 
     @Override
-    public void disconnect(User user) {
-        userRepo.findByUsername(user.getUsername())
-                .switchIfEmpty(Mono.error(new RuntimeException("User not found")))
+    public Mono<User> disconnect(UserDTO userDTO) {
+        return userRepo.findByUsername(userDTO.getUsername())
+                .switchIfEmpty(Mono.error(new RuntimeException("User not found when trying to disconnect")))
                 .flatMap(u -> {
                     u.setStatus(STATUS.OFFLINE);
                     return userRepo.save(u);
                 })
-                .doOnError(e -> log.error("Error disconnecting: {}", String.valueOf(e)))
-                .subscribe();
+                .doOnError(e -> log.error("Error disconnecting: {}", String.valueOf(e)));
+    }
+
+    @Override
+    public Mono<User> addUser(UserDTO userDTO) {
+        return userRepo.save(User.builder()
+                        .username(userDTO.getUsername())
+                        .status(STATUS.ONLINE)
+                .build());
     }
 
     @Override

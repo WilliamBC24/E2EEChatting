@@ -5,6 +5,11 @@ spring:
     mongodb:
       uri: ${DB_URI}
       database: ${DB_DB}
+#      username: ${USERNAME}
+#      password: ${PASSWORD}
+#      host: ${HOST}
+#      port: ${PORT}
+#      authentication-database: ${AUTH_DB}
 logging:
   level:
     org:
@@ -12,6 +17,8 @@ logging:
         data:
           mongodb:
             core: DEBUG
+    service:
+      authservice: debug
 
 server:
   port: 8081

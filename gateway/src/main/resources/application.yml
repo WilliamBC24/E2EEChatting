@@ -30,9 +30,24 @@ spring:
             - Path=/message/**
           filters:
             - StripPrefix=1
+        - id: message-service-ws
+#          uri: http://message-service-service:8081
+          uri: ws://localhost:8081/ws
+          predicates:
+            - Path=/message/ws/**
+          filters:
+            - StripPrefix=1
   config:
     import: "optional:configserver:${CONFIG_URI}"
 
 server:
   port: 8090
 
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        security: DEBUG
+    service:
+      gateway: DEBUG
