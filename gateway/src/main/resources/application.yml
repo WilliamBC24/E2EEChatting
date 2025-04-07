@@ -1,6 +1,8 @@
 spring:
   application:
     name: gateway
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   cloud:
     gateway:
       globalcors:
@@ -15,28 +17,6 @@ spring:
               - OPTIONS
             allowedHeaders: "*"
             allowCredentials: true
-      routes:
-        - id: auth-service
-#          uri: http://auth-service-service:8080
-          uri: http://localhost:8080
-          predicates:
-            - Path=/auth/**
-          filters:
-            - StripPrefix=1
-        - id: message-service
-#          uri: http://message-service-service:8081
-          uri: http://localhost:8081
-          predicates:
-            - Path=/message/**
-          filters:
-            - StripPrefix=1
-        - id: message-service-ws
-#          uri: http://message-service-service:8081
-          uri: ws://localhost:8081/ws
-          predicates:
-            - Path=/message/ws/**
-          filters:
-            - StripPrefix=1
   config:
     import: "optional:configserver:${CONFIG_URI}"
 

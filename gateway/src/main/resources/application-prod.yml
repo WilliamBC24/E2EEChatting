@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: http://auth-service-service:8080
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: message-service
+          uri: http://message-service-service:8081
+          predicates:
+            - Path=/message/**
+          filters:
+            - StripPrefix=1
+        - id: message-service-ws
+          uri: http://message-service-service:8081
+          predicates:
+            - Path=/message/ws/**
+          filters:
+            - StripPrefix=1
