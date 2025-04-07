@@ -87,7 +87,7 @@ const appendUserToList = (u, target) => {
   listItem.id = u.username;
 
   const userImage = document.createElement('img');
-  userImage.src = '../img/user_icon.png';
+  userImage.src = '../cat.png';
 
   const usernameSpan = document.createElement('span');
   usernameSpan.textContent = u.username;
