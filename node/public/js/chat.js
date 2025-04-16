@@ -60,6 +60,7 @@ const testMessage = () => {
 const onConnected = async () => {
 
   stompClient.subscribe('/dest/chatbox/123', (m) => {
+    console.log('Got message', m.body)
     const message = JSON.parse(m.body);
     alert(`Message from ${message.sender}: ${message.content}`)
   })

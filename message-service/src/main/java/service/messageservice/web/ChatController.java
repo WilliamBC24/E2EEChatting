@@ -13,6 +13,7 @@ import service.messageservice.service.itf.MessageService;
 public class ChatController {
     private final SimpMessagingTemplate messagingTemplate;
     private final MessageService messageService;
+
     public ChatController(SimpMessagingTemplate messagingTemplate, MessageService messageService) {
         this.messagingTemplate = messagingTemplate;
         this.messageService = messageService;
@@ -21,18 +22,21 @@ public class ChatController {
     //Listens at /app/chat
     @MessageMapping("/chat")
     public Mono<Message> processMessage(@Payload Message message) {
-       return messageService.save(message)
+        String destination = "/chatbox/" + message.getChatId();
+        System.out.println(destination);
+        System.out.println(message.getContent());
+        return messageService.save(message)
                 .doOnNext(savedMessage ->
-                    messagingTemplate.convertAndSend(
-                            //For WebSocket subscription, at /dest/chatbox/chatId
-                            "/chatbox/" + message.getChatId(),
-                            //Send the message to the chat so it can be rendered on screen
-                            ChatNoti.builder()
-                                    .sender(message.getSender())
-                                    .chatId(message.getChatId())
-                                    .content(message.getContent())
-                                    .build()
-                    )
+                        messagingTemplate.convertAndSend(
+                                //For WebSocket subscription, at /dest/chatbox/chatId
+                                destination,
+                                //Send the message to the chat so it can be rendered on screen
+                                ChatNoti.builder()
+                                        .sender(message.getSender())
+                                        .chatId(message.getChatId())
+                                        .content(message.getContent())
+                                        .build()
+                        )
                 );
     }
 }
