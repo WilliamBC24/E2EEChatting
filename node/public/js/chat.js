@@ -9,7 +9,8 @@ const connectedUsersList = document.querySelector("#connectedUsers");
 const connectedUser = document.querySelector("#connected-user");
 
 const testButton =  document.querySelector('#testButton');
-testButton.addEventListener('click', () => {
+testButton.addEventListener('click', (e) => {
+  e.preventDefault();
   testMessage();
 })
 //Bonus
