@@ -62,7 +62,7 @@ const onConnected = async () => {
   stompClient.subscribe('/chatbox/123', (m) => {
     console.log('Got message', m.body)
     const message = JSON.parse(m.body);
-    alert(`Message from ${message.sender}: ${message.content}`)
+    addMessageToChatArea(message.content)
   })
 
   const res = await fetch("/gateway/message/user/connect", {
@@ -79,6 +79,16 @@ const onConnected = async () => {
     getOnlineUserList();
   }
 }
+
+const addMessageToChatArea = (message) => {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message-bubble");
+
+  messageDiv.textContent = message;
+
+  chatArea.appendChild(messageDiv);
+}
+
 
 const onError = () => {};
 

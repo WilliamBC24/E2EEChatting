@@ -7,6 +7,27 @@
     <title><%= lang('chat.title') %></title>
   </head>
   <body>
+    <style>
+      #chat-messages {
+        padding: 1rem;
+        max-height: 400px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .message-bubble {
+        background-color: #e0f7fa;
+        color: #333;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        max-width: 70%;
+        align-self: flex-start;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        word-wrap: break-word;
+      }
+    </style>
     <div class="chat-container" id="chat-page">
       <div class="users-list">
         <div class="users-list-container">
@@ -15,7 +36,9 @@
         </div>
         <div>
           <p id="connected-user"></p>
-          <a class="logout" href="javascript:void(0)" id="logout"><%= lang('chat.logout') %></a>
+          <a class="logout" href="javascript:void(0)" id="logout"
+            ><%= lang('chat.logout') %></a
+          >
         </div>
       </div>
 
