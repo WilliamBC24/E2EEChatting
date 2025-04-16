@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         //For broadcasting messages
-        registry.enableSimpleBroker("/broker");
+        registry.enableSimpleBroker("/chatbox");
         //Location where server accepts messages
         registry.setApplicationDestinationPrefixes("/app");
         //For P2P
