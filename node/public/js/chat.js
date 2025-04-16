@@ -8,6 +8,10 @@ const logout = document.querySelector("#logout");
 const connectedUsersList = document.querySelector("#connectedUsers");
 const connectedUser = document.querySelector("#connected-user");
 
+const testButton =  document.querySelector('#testButton');
+testButton.addEventListener('click', () => {
+  testMessage();
+})
 //Bonus
 // window.addEventListener("beforeunload", () => {
 //   stompClient.disconnect()
@@ -38,11 +42,26 @@ const connect = () => {
   stompClient.connect({}, onConnected, onError);
 };
 
+const testMessage = () => {
+  let msg = JSON.stringify({
+    chatId: '123',
+    sender: 'sonbui',
+    content: 'It works',
+    timestamp: Date.now()
+  })
+  stompClient.send('/app/chat', {}, msg)
+}
+
 // await is similar to .then
 // use async await when getUserList requires output from fetch
 // await is basically a checkpoint
 // no need to worry about memory usage as the consts are short-lived 
 const onConnected = async () => {
+
+  stompClient.subscribe('/dest/chatbox/123', m => {
+    alert(m);
+  })
+
   const res = await fetch("/gateway/message/user/connect", {
     method: "PUT",
     headers: {
