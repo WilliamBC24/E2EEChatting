@@ -23,12 +23,10 @@ public class ChatController {
     @MessageMapping("/chat")
     public Mono<Message> processMessage(@Payload Message message) {
         String destination = "/chatbox/" + message.getChatId();
-        System.out.println(destination);
-        System.out.println(message.getContent());
         return messageService.save(message)
                 .doOnNext(savedMessage ->
                         messagingTemplate.convertAndSend(
-                                //For WebSocket subscription, at /dest/chatbox/chatId
+                                //For WebSocket subscription, at /chatbox/chatId
                                 destination,
                                 //Send the message to the chat so it can be rendered on screen
                                 ChatNoti.builder()

@@ -59,7 +59,7 @@ const testMessage = () => {
 // no need to worry about memory usage as the consts are short-lived 
 const onConnected = async () => {
 
-  stompClient.subscribe('/dest/chatbox/123', (m) => {
+  stompClient.subscribe('/chatbox/123', (m) => {
     console.log('Got message', m.body)
     const message = JSON.parse(m.body);
     alert(`Message from ${message.sender}: ${message.content}`)
