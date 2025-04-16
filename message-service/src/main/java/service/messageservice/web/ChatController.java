@@ -4,14 +4,12 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import service.messageservice.entity.Message;
 import service.messageservice.entity.ChatNoti;
 import service.messageservice.service.itf.MessageService;
 
 @Controller
-@RequestMapping("/chat")
 public class ChatController {
     private final SimpMessagingTemplate messagingTemplate;
     private final MessageService messageService;
