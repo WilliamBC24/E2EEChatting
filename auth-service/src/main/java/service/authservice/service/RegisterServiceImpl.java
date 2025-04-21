@@ -3,11 +3,12 @@ package service.authservice.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import service.authservice.entity.User;
-import service.authservice.entity.Enum.Role;
+import service.authservice.entity.enums.Role;
 import service.authservice.repo.UserRepo;
-import service.authservice.entity.dto.UserRegisterDTO;
+import service.authservice.entity.dto.RegisterDTO;
 import service.authservice.service.itf.RegisterService;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -21,12 +22,15 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public void register(UserRegisterDTO accountDTO) {
-        if (userRepo.existsByUsername(accountDTO.getUsername())) {
-            throw new IllegalArgumentException("Username is already in use");
-        }
-        if (userRepo.existsByEmail(accountDTO.getEmail())) {
-            throw new IllegalArgumentException("Email is already in use");
+    public void register(RegisterDTO accountDTO) {
+        Optional<User> existingUser = userRepo.findByUsernameOrEmail(accountDTO.getUsername(), accountDTO.getEmail());
+        if (existingUser.isPresent()) {
+            if (existingUser.get().getUsername().equals(accountDTO.getUsername())) {
+                throw new IllegalArgumentException("Username is already in use");
+            }
+            if (existingUser.get().getEmail().equals(accountDTO.getEmail())) {
+                throw new IllegalArgumentException("Email is already in use");
+            }
         }
         String encodedPassword = passwordEncoder.encode(accountDTO.getPassword());
         User newUser = User.builder()

@@ -10,15 +10,6 @@ spring:
 #      host: ${HOST}
 #      port: ${PORT}
 #      authentication-database: ${AUTH_DB}
-logging:
-  level:
-    org:
-      springframework:
-        data:
-          mongodb:
-            core: DEBUG
-    service:
-      authservice: debug
 
 server:
   port: 8081

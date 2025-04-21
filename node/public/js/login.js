@@ -18,9 +18,12 @@ const submitLogin = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        //Validate this
         if (data) {
           localStorage.setItem("user", JSON.stringify(data));
+
           window.location.href = "/chat";
+
         } else {
           alert("Invalid credentials");
         }

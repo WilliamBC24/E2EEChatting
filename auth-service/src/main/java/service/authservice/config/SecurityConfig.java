@@ -34,11 +34,13 @@ public class SecurityConfig {
     }
 
     @Bean
+    //Define bean for handling auth
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
     @Bean
+    //Define bean for authentication
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
         daoProvider.setUserDetailsService(userDetailsService);

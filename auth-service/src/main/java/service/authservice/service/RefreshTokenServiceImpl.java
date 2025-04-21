@@ -8,7 +8,7 @@ import java.util.UUID;
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
-    public String generateRefreshToken(Long userId) {
+    public String generateRefreshToken() {
         return UUID.randomUUID().toString().replace("-", "");
     }
 }

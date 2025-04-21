@@ -1,4 +1,4 @@
-package service.authservice.entity.Enum;
+package service.authservice.entity.enums;
 
 public enum Role {
     USER,

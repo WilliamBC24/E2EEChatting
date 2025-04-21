@@ -6,6 +6,7 @@ import reactor.core.publisher.Mono;
 import service.messageservice.entity.ChatRoom;
 import service.messageservice.entity.User;
 import service.messageservice.entity.dto.UserDTO;
+import service.messageservice.entity.response.ApiResponse;
 import service.messageservice.service.ChatRoomServiceImpl;
 import service.messageservice.service.UserServiceImpl;
 
@@ -23,28 +24,45 @@ public class UserController {
     }
 
     @PutMapping("/connect")
-    public Mono<List<ChatRoom>> connect(@RequestBody UserDTO userDTO) {
+    public Mono<ResponseEntity<ApiResponse<List<ChatRoom>>>> connect(@RequestBody UserDTO userDTO) {
         return userService.connect(userDTO)
                 .flatMap(connectedUser -> chatRoomService.getChats(connectedUser.getUsername())
-                        .collectList());
+                        .collectList())
+                .map(chatRooms -> ResponseEntity.ok(ApiResponse.<List<ChatRoom>>builder()
+                        .success(true)
+                        .message("Connect success")
+                        .data(chatRooms)
+                        .build()));
     }
 
     @PutMapping("/disconnect")
-    public Mono<ResponseEntity<User>> disconnect(@RequestBody UserDTO userDTO) {
+    public Mono<ResponseEntity<ApiResponse<User>>> disconnect(@RequestBody UserDTO userDTO) {
         return userService.disconnect(userDTO)
-                .map(ResponseEntity::ok);
+                .map(user -> ResponseEntity.ok(ApiResponse.<User>builder()
+                        .success(true)
+                        .message("Disconnect success")
+                        .data(user)
+                        .build()));
     }
 
     @PostMapping("/add")
-    public Mono<ResponseEntity<User>> add(@RequestBody UserDTO userDTO) {
+    public Mono<ResponseEntity<ApiResponse<User>>> add(@RequestBody UserDTO userDTO) {
         return userService.addUser(userDTO)
-                .map(ResponseEntity::ok);
+                .map(user -> ResponseEntity.ok(ApiResponse.<User>builder()
+                        .success(true)
+                        .message("Add success")
+                        .data(user)
+                        .build()));
     }
 
     @GetMapping("/users")
-    public Mono<ResponseEntity<List<User>>> getUsers() {
+    public Mono<ResponseEntity<ApiResponse<List<User>>>> getUsers() {
         return userService.findOnlineUsers()
                 .collectList()
-                .map(ResponseEntity::ok);
+                .map(onlineUsers -> ResponseEntity.ok(ApiResponse.<List<User>>builder()
+                        .success(true)
+                        .message("Got online users")
+                        .data(onlineUsers)
+                        .build()));
     }
 }

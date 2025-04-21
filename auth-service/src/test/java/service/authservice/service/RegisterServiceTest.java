@@ -7,9 +7,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import service.authservice.entity.Enum.Role;
+import service.authservice.entity.enums.Role;
 import service.authservice.entity.User;
-import service.authservice.entity.dto.UserRegisterDTO;
+import service.authservice.entity.dto.RegisterDTO;
 import service.authservice.repo.UserRepo;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +30,7 @@ class RegisterServiceTest {
 
     @Test
     void registerSuccess() {
-        UserRegisterDTO userRegisterDTO = new UserRegisterDTO(
+        RegisterDTO userRegisterDTO = new RegisterDTO(
                 "username", "pass", "pass", "email@email.com");
 
         when(passwordEncoder.encode("pass")).thenReturn("hashedPass");
@@ -58,14 +58,14 @@ class RegisterServiceTest {
 
     @Test
     void registerFailsWhenUsernameExists() {
-        UserRegisterDTO userRegisterDTO = new UserRegisterDTO(
+        RegisterDTO registerDTO = new RegisterDTO(
                 "username", "pass", "pass", "email@email.com");
 
         when(userRepo.existsByUsername("username")).thenReturn(true);
 
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> registerService.register(userRegisterDTO),
+                () -> registerService.register(registerDTO),
                 "Expected register() to throw when username exists"
         );
 
@@ -77,7 +77,7 @@ class RegisterServiceTest {
 
     @Test
     void registerFailsWhenEmailExists() {
-        UserRegisterDTO userRegisterDTO = new UserRegisterDTO(
+        RegisterDTO registerDTO = new RegisterDTO(
                 "username", "pass", "pass", "email@email.com");
 
         when(userRepo.existsByUsername("username")).thenReturn(false);
@@ -85,7 +85,7 @@ class RegisterServiceTest {
 
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> registerService.register(userRegisterDTO),
+                () -> registerService.register(registerDTO),
                 "Expected register() to throw when email exists"
         );
 

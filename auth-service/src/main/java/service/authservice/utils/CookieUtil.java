@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CookieUtil {
 
-//    private CookieUtil() {
-//        throw new UnsupportedOperationException("Utility class - should not be instantiated");
-//    }
+    private CookieUtil() {}
 
     public static void setCookie(HttpServletResponse response, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);

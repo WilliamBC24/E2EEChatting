@@ -14,9 +14,12 @@ spring:
             - Path=/message/**
           filters:
             - StripPrefix=1
-        - id: message-service-ws
-          uri: ws://localhost:8081/ws
-          predicates:
-            - Path=/message/ws/**
-          filters:
-            - StripPrefix=1
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        security: DEBUG
+    service:
+      gateway: DEBUG

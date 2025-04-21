@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import service.messageservice.entity.Message;
+import service.messageservice.entity.response.ApiResponse;
 import service.messageservice.service.ChatRoomServiceImpl;
 import service.messageservice.service.MessageServiceImpl;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class MessageController {
     private final ChatRoomServiceImpl chatRoomService;
     private final MessageServiceImpl messageService;
+
     public MessageController(ChatRoomServiceImpl chatRoomService, MessageServiceImpl messageService) {
         this.chatRoomService = chatRoomService;
         this.messageService = messageService;
@@ -33,9 +35,13 @@ public class MessageController {
 
     //For fetching messages, only needed once for fetching past messages
     @GetMapping("/{chatId}")
-    public Mono<ResponseEntity<List<Message>>> getMessages(@PathVariable String chatId) {
+    public Mono<ResponseEntity<ApiResponse<List<Message>>>> getMessages(@PathVariable String chatId) {
         return messageService.findMessages(chatId)
                 .collectList()
-                .map(ResponseEntity::ok);
+                .map(messages -> ResponseEntity.ok(ApiResponse.<List<Message>>builder()
+                        .success(true)
+                        .message("Got messages")
+                        .data(messages)
+                        .build()));
     }
 }
