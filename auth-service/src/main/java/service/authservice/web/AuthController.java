@@ -13,6 +13,7 @@ import service.authservice.entity.response.RegisterResponse;
 import service.authservice.service.RegisterServiceImpl;
 import service.authservice.service.UserServiceImpl;
 import service.authservice.utils.CookieUtil;
+import service.authservice.utils.ResponseBuilder;
 
 import java.util.Map;
 
@@ -33,11 +34,9 @@ public class AuthController {
         Map<String, String> map = userServiceImpl.verify(loginDTO);
         CookieUtil.setCookie(response, "jwt", map.get("jwt"), 30000);
         CookieUtil.setCookie(response, "refresh", map.get("refresh"), 30000);
-        return ResponseEntity.ok(ApiResponse.<LoginResponse>builder()
-                .success(true)
-                .message("Login success")
-                .data(new LoginResponse(loginDTO.getUsername()))
-                .build());
+        return ResponseBuilder
+                        .buildSuccessResponse("Login success", new LoginResponse(loginDTO.getUsername()));
+
     }
 
     @PostMapping("/register")
@@ -45,10 +44,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<RegisterResponse>> registerAccount(@RequestBody @Valid RegisterDTO accountDTO) {
         //@Valid will throw an error which will be handled with global helper
         registerServiceImpl.register(accountDTO);
-        return ResponseEntity.ok(ApiResponse.<RegisterResponse>builder()
-                .success(true)
-                .message("Register success")
-                .data(new RegisterResponse(accountDTO.getUsername()))
-                .build());
+        return ResponseBuilder
+                        .buildSuccessResponse("Login success", new RegisterResponse(accountDTO.getUsername()));
     }
 }

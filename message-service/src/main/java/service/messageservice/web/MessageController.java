@@ -9,6 +9,7 @@ import service.messageservice.entity.Message;
 import service.messageservice.entity.response.ApiResponse;
 import service.messageservice.service.ChatRoomServiceImpl;
 import service.messageservice.service.MessageServiceImpl;
+import service.messageservice.util.ResponseBuilder;
 
 import java.util.List;
 
@@ -33,15 +34,14 @@ public class MessageController {
                 );
     }
 
-    //For fetching messages, only needed once for fetching past messages
+    //For fetching messages
+    //Use flux stream and pagination instead, the data will be sent in chunks
+    //On the client side it will still be 1 json and can still be used for rendering
+    //Or if you dont want it in chunks, render page by page and send request for more
     @GetMapping("/{chatId}")
     public Mono<ResponseEntity<ApiResponse<List<Message>>>> getMessages(@PathVariable String chatId) {
         return messageService.findMessages(chatId)
                 .collectList()
-                .map(messages -> ResponseEntity.ok(ApiResponse.<List<Message>>builder()
-                        .success(true)
-                        .message("Got messages")
-                        .data(messages)
-                        .build()));
+                .map(messages -> ResponseBuilder.buildSuccessResponse("Got messages list", messages));
     }
 }

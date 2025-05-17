@@ -9,6 +9,7 @@ import service.messageservice.entity.dto.UserDTO;
 import service.messageservice.entity.response.ApiResponse;
 import service.messageservice.service.ChatRoomServiceImpl;
 import service.messageservice.service.UserServiceImpl;
+import service.messageservice.util.ResponseBuilder;
 
 import java.util.List;
 
@@ -28,41 +29,25 @@ public class UserController {
         return userService.connect(userDTO)
                 .flatMap(connectedUser -> chatRoomService.getChats(connectedUser.getUsername())
                         .collectList())
-                .map(chatRooms -> ResponseEntity.ok(ApiResponse.<List<ChatRoom>>builder()
-                        .success(true)
-                        .message("Connect success")
-                        .data(chatRooms)
-                        .build()));
+                .map(chatRooms -> ResponseBuilder.buildSuccessResponse("Connect success", chatRooms));
     }
 
     @PutMapping("/disconnect")
     public Mono<ResponseEntity<ApiResponse<User>>> disconnect(@RequestBody UserDTO userDTO) {
         return userService.disconnect(userDTO)
-                .map(user -> ResponseEntity.ok(ApiResponse.<User>builder()
-                        .success(true)
-                        .message("Disconnect success")
-                        .data(user)
-                        .build()));
+                .map(user -> ResponseBuilder.buildSuccessResponse("Disconnect success", user));
     }
 
     @PostMapping("/add")
     public Mono<ResponseEntity<ApiResponse<User>>> add(@RequestBody UserDTO userDTO) {
         return userService.addUser(userDTO)
-                .map(user -> ResponseEntity.ok(ApiResponse.<User>builder()
-                        .success(true)
-                        .message("Add success")
-                        .data(user)
-                        .build()));
+                .map(user -> ResponseBuilder.buildSuccessResponse("Added user", user));
     }
 
     @GetMapping("/users")
     public Mono<ResponseEntity<ApiResponse<List<User>>>> getUsers() {
         return userService.findOnlineUsers()
                 .collectList()
-                .map(onlineUsers -> ResponseEntity.ok(ApiResponse.<List<User>>builder()
-                        .success(true)
-                        .message("Got online users")
-                        .data(onlineUsers)
-                        .build()));
+                .map(onlineUsers -> ResponseBuilder.buildSuccessResponse("Got online users", onlineUsers));
     }
 }

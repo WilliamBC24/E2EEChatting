@@ -65,6 +65,15 @@ const onConnected = async () => {
     const message = JSON.parse(m.body);
     addMessageToChatArea(message.content)
   })
+  //get top recent chats
+  //sub to a chat like /chatbox/username/noti where the user is the only participant
+  //check participation of chat when trying to sub by sending a check request
+  //if not a member then redirect to latest chat
+//   function handleChatClick(chatId) {
+//     window.history.pushState({}, '', `/chat/${chatId}`); to change url without reloading page
+//     loadChatContent(chatId);  // Load the chat content
+// }
+  //close connection to old chat when user clicks on a new chat
 
   // const res = await fetch("/gateway/message/user/connect", {
   const res = await fetch("http://localhost:8090/message/user/connect", {
