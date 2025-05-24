@@ -1,7 +1,5 @@
-// import { webcrypto } from "crypto";
-
 const createRSA = async () => {
-    return await webcrypto.subtle.generateKey(
+    return await window.crypto.subtle.generateKey(
         {
             name: "RSA-OAEP",
             modulusLength: 4096,
@@ -14,7 +12,7 @@ const createRSA = async () => {
 }
 
 const createAES = async () => {
-     const key = await webcrypto.subtle.generateKey(
+     const key = await window.crypto.subtle.generateKey(
         {
             name: "AES-CBC",
             length: 256,
@@ -22,25 +20,25 @@ const createAES = async () => {
         true,
         ["encrypt", "decrypt"],
     );
-    const iv = webcrypto.getRandomValues(new Uint8Array(16));
+    const iv = window.crypto.getRandomValues(new Uint8Array(16));
     return { key, iv };
 }
 
 const exportRSA = async (RSAPair) => {
-    const privateExport = await webcrypto.subtle.exportKey("jwk", RSAPair.privateKey);
-    const publicExport = await webcrypto.subtle.exportKey("jwk", RSAPair.publicKey);
+    const privateExport = await window.crypto.subtle.exportKey("jwk", RSAPair.privateKey);
+    const publicExport = await window.crypto.subtle.exportKey("jwk", RSAPair.publicKey);
     return {privateExport, publicExport}
 }
 
 const exportAES = async (AES) => {
-    return webcrypto.subtle.exportKey(
+    return window.crypto.subtle.exportKey(
         "raw",
         AES
     )
 }
 
 const importPublicRSA = async (publicRSA) => {
-    return await webcrypto.subtle.importKey(
+    return await window.crypto.subtle.importKey(
         "jwk",
         publicRSA,
         {name: "RSA-OAEP", hash: "SHA-256"},
@@ -50,7 +48,7 @@ const importPublicRSA = async (publicRSA) => {
 }
 
 const importPrivateRSA = async (privateRSA) => {
-    return await webcrypto.subtle.importKey(
+    return await window.crypto.subtle.importKey(
         "jwk",
         privateRSA,
         {name: "RSA-OAEP", hash: "SHA-256"},
@@ -60,7 +58,7 @@ const importPrivateRSA = async (privateRSA) => {
 }
 
 const importAES = async (AESdecrypted) => {
-    return await webcrypto.subtle.importKey(
+    return await window.crypto.subtle.importKey(
         "raw",
         AESdecrypted,
         {
@@ -97,7 +95,7 @@ const base64ToArrayBuffer = (base64) => {
 }
 
 const encryptAES = async (AESencoded, publicKey) => {
-    return webcrypto.subtle.encrypt(
+    return window.crypto.subtle.encrypt(
         {
             name: "RSA-OAEP"
         },
@@ -108,7 +106,7 @@ const encryptAES = async (AESencoded, publicKey) => {
 
 const decryptAES = async (privateKey, AESencrypted) => {
     //Returns an ArrayBuffer which contains the decrypted product that needs to be imported
-    return webcrypto.subtle.decrypt(
+    return window.crypto.subtle.decrypt(
         {
             name: "RSA-OAEP"
         },
@@ -118,7 +116,7 @@ const decryptAES = async (privateKey, AESencrypted) => {
 }
 
 const encryptData = async ({key, iv}, encoded) => {
-    return webcrypto.subtle.encrypt(
+    return window.crypto.subtle.encrypt(
         {
             name: "AES-CBC",
             iv: iv
@@ -129,7 +127,7 @@ const encryptData = async ({key, iv}, encoded) => {
 }
 
 const decryptData = async (AES, iv, dataEncrypted) => {
-    return webcrypto.subtle.decrypt(
+    return window.crypto.subtle.decrypt(
         {
             name: "AES-CBC",
             iv
