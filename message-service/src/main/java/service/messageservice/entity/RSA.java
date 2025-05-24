@@ -7,20 +7,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
-@Document(collection = "chat")
+@Document(collection = "rsa")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Message {
+public class RSA {
     @Id
     private String id;
-    private String chatId;
-    private String sender;
-    private String content;
-    private Date timestamp;
-    private String aes_key;
-    private String iv;
+    private String publicKey;
+    private String privateKey;
 }

@@ -22,8 +22,8 @@ testButton.addEventListener('click', (e) => {
 //it wont go to any destination, just to the server
 //you would have to registerWebSocketHandler to handle it
 //which introduces complexity
-// const socket = new WebSocket("ws://sonbui.com/gateway/message/ws");
-const socket = new WebSocket("ws://localhost:8090/message/ws");
+const socket = new WebSocket("ws://sonbui.com/gateway/message/ws");
+// const socket = new WebSocket("ws://localhost:8090/message/ws");
 
 socket.addEventListener('open', event => {
   console.log('WebSocket connection established!');
@@ -44,11 +44,12 @@ const connect = () => {
   stompClient.connect({}, onConnected, onError);
 };
 
-const testMessage = () => {
+const testMessage = (mes) => {
+  const encryptedMessage = encryptionFlow(mes);
   let msg = JSON.stringify({
+    ...encryptedMessage,
     chatId: '123',
     sender: 'sonbui',
-    content: 'It works',
     timestamp: Date.now()
   })
   stompClient.send('/app/chat', {}, msg)
@@ -75,8 +76,8 @@ const onConnected = async () => {
 // }
   //close connection to old chat when user clicks on a new chat
 
-  // const res = await fetch("/gateway/message/user/connect", {
-  const res = await fetch("http://localhost:8090/message/user/connect", {
+  const res = await fetch("/gateway/message/user/connect", {
+  // const res = await fetch("http://localhost:8090/message/user/connect", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -104,8 +105,8 @@ const addMessageToChatArea = (message) => {
 const onError = () => {};
 
 const getOnlineUserList = async () => {
-  // const res = await fetch('/gateway/message/user/users', {
-  const res = await fetch('http://localhost:8090/message/user/users', {
+  const res = await fetch('/gateway/message/user/users', {
+  // const res = await fetch('http://localhost:8090/message/user/users', {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
