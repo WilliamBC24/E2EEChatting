@@ -140,7 +140,8 @@ const decryptData = async (AES, iv, dataEncrypted) => {
 const saveRSA = async () => {
     const RSA = await createRSA();
     const RSAexported = await exportRSA(RSA);
-    await fetch("/gateway/message/security/saveRSA", {
+    // await fetch("/gateway/message/security/saveRSA", {
+    await fetch("http://localhost:8090/message/security/saveRSA", {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -171,7 +172,7 @@ const encryptionFlow = async (data) => {
 const decryptionFlow = async (data) => {
     const AESnIV = await getAESandIV(data)
 
-    const dataBuffer = await base64ToArrayBuffer(data.data.content);
+    const dataBuffer = await base64ToArrayBuffer(data.content);
     const decryptedData = await decryptData(AESnIV.key, AESnIV.iv, dataBuffer);
     return getDecoding(decryptedData);
 }
@@ -185,19 +186,21 @@ const encodeAndEncryptData = async (data, AESandIV) => {
 const getAESandIV = async (data) => {
     const RSA = await getPrivateRSA()
 
-    const AES = await base64ToArrayBuffer(data.data.aes_key);
+    const AES = await base64ToArrayBuffer(data.aes_key);
     const AESdecrypted = await decryptAES(RSA, AES);
     const AESimported = await importAES(AESdecrypted);
-    const iv = base64ToArrayBuffer(data.data.iv);
+    const iv = base64ToArrayBuffer(data.iv);
     return {iv: iv, key: AESimported}
 }
 
 const getPublicRSA = async () => {
-    const {publicKey: publicRSAJSON} = (await fetch("/gateway/message/security/getRSA").then(res => res.json())).data;
+    // const {publicKey: publicRSAJSON} = (await fetch("/gateway/message/security/getRSA").then(res => res.json())).data;
+    const {publicKey: publicRSAJSON} = (await fetch("http://localhost:8090/message/security/getRSA").then(res => res.json())).data;
     return await importPublicRSA(JSON.parse(publicRSAJSON));
 }
 
 const getPrivateRSA = async () => {
-    const {privateKey: privateRSAJSON} = (await fetch("/gateway/message/security/getRSA").then(res => res.json())).data;
+    // const {privateKey: privateRSAJSON} = (await fetch("/gateway/message/security/getRSA").then(res => res.json())).data;
+    const {privateKey: privateRSAJSON} = (await fetch("http://localhost:8090/message/security/getRSA").then(res => res.json())).data;
     return await importPrivateRSA(JSON.parse(privateRSAJSON));
 }

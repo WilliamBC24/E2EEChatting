@@ -30,6 +30,8 @@ public class ChatController {
                                         .sender(message.getSender())
                                         .chatId(message.getChatId())
                                         .content(message.getContent())
+                                        .aes_key(message.getAes_key())
+                                        .iv(message.getIv())
                                         .build()
                         )
                 );

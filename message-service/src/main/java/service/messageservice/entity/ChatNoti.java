@@ -14,4 +14,6 @@ public class ChatNoti {
     private String sender;
     private String chatId;
     private String content;
+    private String aes_key;
+    private String iv;
 }
