@@ -20,7 +20,6 @@ public class Message {
     private String chatId;
     private String sender;
     private String content;
+    private String nonce;
     private Date timestamp;
-    private String aes_key;
-    private String iv;
 }

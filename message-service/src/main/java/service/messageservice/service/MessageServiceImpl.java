@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import service.messageservice.entity.ChatRoom;
 import service.messageservice.entity.Message;
+import service.messageservice.repo.ChatRoomRepo;
 import service.messageservice.repo.MessageRepo;
 import service.messageservice.service.itf.MessageService;
 
@@ -12,14 +14,23 @@ import service.messageservice.service.itf.MessageService;
 @Slf4j
 public class MessageServiceImpl implements MessageService {
     private final MessageRepo messageRepo;
-    public MessageServiceImpl(MessageRepo messageRepo) {
+    private final ChatRoomRepo chatRoomRepo;
+    public MessageServiceImpl(MessageRepo messageRepo, ChatRoomRepo chatRoomRepo) {
         this.messageRepo = messageRepo;
+        this.chatRoomRepo = chatRoomRepo;
     }
 
     @Override
     public Mono<Message> save(Message message) {
         return messageRepo.save(message)
-                .doOnError(e -> log.error("Error saving message: {}", String.valueOf(e)));
+                .flatMap(savedMessage ->
+                        chatRoomRepo.findByChatId(savedMessage.getChatId())
+                                .flatMap(chat -> {
+                                    chat.setLastChat(savedMessage.getTimestamp());
+                                    return chatRoomRepo.save(chat);
+                                })
+                                .thenReturn(savedMessage)
+                );
     }
 
     @Override

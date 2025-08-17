@@ -3,6 +3,4 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
-  config:
-    import: "optional:configserver:${CONFIG_URI}"
 

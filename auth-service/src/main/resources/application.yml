@@ -4,9 +4,12 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+#    url: ${DB_URL}
+    url: jdbc:postgresql://localhost:5432/microservice
+#    username: ${DB_USER}
+    username: dev_local
+#    password: ${DB_PASSWORD}
+    password: Abc123456@
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 5
@@ -26,8 +29,6 @@ spring:
   servlet:
     multipart:
       enabled: true
-  config:
-    import: "optional:configserver:"
 
 server:
   port: 8080

@@ -23,7 +23,8 @@
   },
   "chat": {
     "title": "채팅방", 
-    "onlineUsers": "온라인 사용자", 
+    "friends": "Friends",
+    "onlineUsers": "Online Users",
     "logout": "로그아웃" 
   }
 }

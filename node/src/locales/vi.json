@@ -23,7 +23,8 @@
   },
   "chat": {
     "title": "Phòng Chat",
-    "onlineUsers": "Người dùng online",
+    "friends": "Friends",
+    "onlineUsers": "Online Users",
     "logout": "Đăng xuât"
   }
 }

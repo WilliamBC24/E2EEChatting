@@ -1,11 +1,10 @@
 package service.messageservice.web;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import service.messageservice.entity.Message;
+import service.messageservice.entity.dto.CreateChatDTO;
 import service.messageservice.entity.response.ApiResponse;
 import service.messageservice.service.ChatRoomServiceImpl;
 import service.messageservice.service.MessageServiceImpl;
@@ -24,14 +23,10 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @PostMapping("/createChat")
-    //Create a chat for participants
-    public Mono<ResponseEntity<Void>> getChatID(@RequestParam List<String> participants) {
+    @PutMapping("/createChat")
+    public Mono<ResponseEntity<ApiResponse<String>>> getChatID(@RequestBody CreateChatDTO participants) {
         return chatRoomService.createChat(participants)
-                .map(chatId -> ResponseEntity.status(HttpStatus.FOUND)
-                        .header(HttpHeaders.LOCATION, "/message/" + chatId)
-                        .build()
-                );
+                .map(chatId -> ResponseBuilder.buildSuccessResponse("Created chat", chatId));
     }
 
     //For fetching messages
@@ -44,4 +39,5 @@ public class MessageController {
                 .collectList()
                 .map(messages -> ResponseBuilder.buildSuccessResponse("Got messages list", messages));
     }
+
 }

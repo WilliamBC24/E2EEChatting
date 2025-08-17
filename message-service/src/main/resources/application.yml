@@ -6,12 +6,17 @@ spring:
   data:
     mongodb:
       uri: ${URI}
-#      database: ${DB}
-#      username: ${USERNAME}
-#      password: ${PASSWORD}
-#      host: ${HOST}
-#      port: ${PORT}
-#      authentication-database: ${AUTH_DB}
+    redis:
+      host: localhost
+      port: 6379
 
 server:
   port: 8081
+
+management:
+  server:
+    port: 9091
+  endpoints:
+    web:
+      exposure:
+        include: "*"
